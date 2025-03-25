@@ -1,0 +1,120 @@
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Link, Linkedin, Github, Twitter, File } from "lucide-react";
+import SignupNav from "./SignupNav";
+import ExperienceForm from "./ExperienceForm";
+
+
+const ProfessionalSignup = ({input, setInput}) => {
+
+    const changeEventHandler = (e) => {
+        setInput({ ...input, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(input);
+    };
+
+    return (
+        <div className="flex flex-col w-full items-center justify-start h-screen ">
+            <SignupNav />
+            <form onSubmit={handleSubmit} className="flex flex-1 flex-col items-center justify-between w-full px-10 gap-4">
+
+                <div className="flex flex-1 gap-4 w-full">
+                    <div className="flex flex-1 h-full w-full overflow-y-auto">
+                        <ExperienceForm input={input} setInput={setInput}  />
+                    </div>
+                    <div className="flex flex-1 flex-col items-start justify-start w-full gap-3">
+                        <div className="flex flex-col w-full">
+                            <Label htmlFor="resume" className="mb-1">Resume</Label>
+                            <div className="relative">
+                                <Input
+                                    id="resume"
+                                    type="text"
+                                    placeholder="Upload Resume"
+                                    name="resume"
+                                    value={input.resume}
+                                    onChange={changeEventHandler}
+                                    required
+                                    className="pl-10"
+                                />
+                                <File className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                            </div>
+                        </div>
+                        <Label className="-mb-1 mt-4">
+                            Url
+                            <span className="text-red-500 font-normal text-xs">(LinkedIn, GitHub - required)</span>    
+                        </Label>
+                        <div className="flex flex-col w-full">
+                            <div className="relative">
+                                <Input
+                                    type="text"
+                                    placeholder="LinkedIn"
+                                    name="linkedin"
+                                    value={input.url.linkedIn}
+                                    onChange={changeEventHandler}
+                                    required
+                                    className="pl-10"
+                                />
+                                <Linkedin className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                            </div>
+                        </div>
+                        <div className="flex flex-col w-full">
+                            <div className="relative">
+                                <Input
+                                    type="text"
+                                    placeholder="GitHub"
+                                    name="gitHub"
+                                    value={input.url.gitHub}
+                                    onChange={changeEventHandler}
+                                    required
+                                    className="pl-10"
+                                />
+                                <Github className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                            </div>
+                        </div>
+                        <div className="flex flex-col w-full">
+                            <div className="relative">
+                                <Input
+                                    type="text"
+                                    placeholder="Twitter"
+                                    name="twitter"
+                                    value={input.url.twitter}
+                                    onChange={changeEventHandler}
+                                    required
+                                    className="pl-10"
+                                />
+                                <Twitter className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                            </div>
+                        </div>
+                        <div className="flex flex-col w-full">
+                            <div className="relative">
+                                <Input
+                                    type="text"
+                                    placeholder="Portfolio"
+                                    name="portfolio"
+                                    value={input.url.portfolio}
+                                    onChange={changeEventHandler}
+                                    required
+                                    className="pl-10"
+                                />
+                                <Link className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mb-3 w-full">
+                    <Button type="submit" className="w-full bg-red-500 hover:bg-red-600 text-white font-medium">
+                        Sign Up
+                    </Button>
+                </div>
+            </form>
+
+        </div>
+    );
+}
+
+export default ProfessionalSignup

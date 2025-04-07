@@ -15,8 +15,8 @@ const SignupTabs = () => {
         email: "",
         password: "",
         contact: "",
-        resume: null,
-        profilePicture: null,
+        resume: "",
+        profilePicture: "",
         url: {
             linkedIn: "",
             gitHub: "",
@@ -28,37 +28,59 @@ const SignupTabs = () => {
             {
                 degree: "",
                 institution: "",
-                startDate: "",
-                endDate: "",
+                startYear: "",
+                endYear: "",
             }
         ],
+        role: "Employee"
     });
 
-  return (
-    <div className="h-screen w-screen flex flex-col justify-between items-center">
-            <Tabs defaultValue="personal" className="flex flex-row bg-red-500 gap-0 h-screen w-full">
+    const [activeTab, setActiveTab] = useState('personal'); // State to track active tab
+
+    const handleTabChange = (tabValue) => {
+        setActiveTab(tabValue); // Function to change active tab
+    };
+
+    return (
+        <div className="h-screen w-screen flex flex-col justify-between items-center">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="flex flex-row bg-red-500 gap-0 h-screen w-full">
                 <div className="flex h-full">
                     <div className="flex flex-col justify-between">
                         <TabsList className="flex flex-col p-2 mt-3 gap-3 justify-start items-start bg-red-500 rounded-none min-w-[200px] w-fit h-fit">
-                                <TabsTrigger value="personal" className="hover:bg-red-700 text-white mb-2 py-2 h-fit w-full">
-                                    <Home size={20} /> Personl Details
-                                </TabsTrigger>
-                                <TabsTrigger value="pofessional" className="hover:bg-red-700 text-white py-2 mb-2 h-fit w-full">
-                                    <FileText size={20} /> Professional Details
-                                </TabsTrigger>
+                            <TabsTrigger
+                                value="personal"
+                                className={`hover:bg-red-700 text-white mb-2 py-2 h-fit w-full `}
+                                onClick={() => handleTabChange('personal')}
+                            >
+                                <Home size={20} /> Personal Details
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="professional"
+                                className={`hover:bg-red-700 text-white py-2 mb-2 h-fit w-full`}
+                                onClick={() => handleTabChange('professional')}
+                            >
+                                <FileText size={20} /> Professional Details
+                            </TabsTrigger>
                         </TabsList>
                         <div className="flex items-center justify-center">
-                            <Button className="w-4/5 hover:bg-gray-900 mb-3" onClick={() => navigate("/login")}>Login</Button>
+                            <Button className="w-4/5 hover:bg-gray-900 mb-3" onClick={() => navigate('/login')}>
+                                Login
+                            </Button>
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-1 bg-white overflow-y-auto">
-                    <TabsContent value="personal"><PersonalSignup input={input} setInput={setInput} /></TabsContent>
-                    <TabsContent value="pofessional"><ProfessionalSignup input={input} setInput={setInput} /></TabsContent>
+                    <TabsContent value={activeTab}>
+                        {activeTab === 'personal' ? (
+                            <PersonalSignup input={input} setInput={setInput} setActiveTab={setActiveTab} />
+                        ) : (
+                            <ProfessionalSignup input={input} setInput={setInput}  />
+                        )}
+                    </TabsContent>
                 </div>
             </Tabs>
         </div>
-  )
+    )
 }
 
 export default SignupTabs

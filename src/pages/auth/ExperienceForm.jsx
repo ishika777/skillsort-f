@@ -2,8 +2,13 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function ExperienceForm({input, setInput}) {
+
+    const [submitted, setSubmitted] = useState(false);
+
     const handleChange = (index, field, value) => {
         const newExperiences = input.experience.map((exp, i) => {
             if (i === index) {
@@ -32,9 +37,30 @@ export default function ExperienceForm({input, setInput}) {
         }));
     };
 
+    const submitHandler = () => {
+        console.log(input.experience);
+        const hasEmptyField = input.experience.some((exp) => {
+            return (
+                exp.jobTitle === "" ||
+                exp.companyName === "" ||
+                exp.startDate === "" ||
+                exp.endDate === "" ||
+                exp.description === ""
+            );
+        });
+        if (hasEmptyField) {
+            toast.error("Please fill all the experience fields.");
+            return;
+        }
+        setSubmitted(true);
+        console.log("Experience Data:", input.experience);
+    }
+
+
+
     return (
         <div className="flex w-full overflow-y-auto items-center justify-center px-6">
-            <form className="space-y-6">
+            <div className="space-y-6">
                 {input.experience.map((exp, index) => (
                     <div key={index} className="grid grid-cols-1 sm:grid-cols-2 gap-4 border p-4 rounded-lg relative">
                         <div>
@@ -65,7 +91,7 @@ export default function ExperienceForm({input, setInput}) {
                             <Label className="mb-2" htmlFor={`startDate-${index}`}>Start Date</Label>
                             <Input
                                 id={`startDate-${index}`}
-                                type="date"
+                                type="month"
                                 value={exp.startDate}
                                 onChange={(e) => handleChange(index, "startDate", e.target.value)}
                                 required
@@ -76,7 +102,7 @@ export default function ExperienceForm({input, setInput}) {
                             <Label className="mb-2" htmlFor={`endDate-${index}`}>End Date</Label>
                             <Input
                                 id={`endDate-${index}`}
-                                type="date"
+                                type="month"
                                 value={exp.endDate}
                                 onChange={(e) => handleChange(index, "endDate", e.target.value)}
                             />
@@ -103,18 +129,26 @@ export default function ExperienceForm({input, setInput}) {
                     </div>
                 ))}
 
-                {/* Add Experience Button */}
+                {
+                    !submitted && (
                 <div className="flex justify-center">
                     <Button type="button" onClick={addExperience} className="flex items-center gap-2">
                         <PlusCircle size={18} /> Add Experience
                     </Button>
                 </div>
 
-                {/* Submit Button */}
-                <Button type="submit" className={`w-full bg-blue-500 hover:bg-blue-600 text-white font-medium `} disabled={input.experience.length === 0}>
+                    )
+                }
+                {
+                    !submitted && (
+                <Button type="button" onClick={submitHandler} className={`w-full bg-blue-500 hover:bg-blue-600 text-white font-medium `} disabled={input.experience.length === 0}>
                     Submit
                 </Button>
-            </form>
+
+                    )
+                }
+
+            </div>
         </div>
     );
 }

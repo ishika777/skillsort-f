@@ -28,6 +28,21 @@ button{
     visibility: hidden;
 }
 
+input{
+    @apply outline-none focus:border-black focus:border-2 focus:ring-0;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

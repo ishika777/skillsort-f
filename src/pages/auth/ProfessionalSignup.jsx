@@ -4,18 +4,33 @@ import { Button } from "@/components/ui/button";
 import { Link, Linkedin, Github, Twitter, File } from "lucide-react";
 import SignupNav from "./SignupNav";
 import ExperienceForm from "./ExperienceForm";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { useState } from "react";
 
 
-const ProfessionalSignup = ({input, setInput}) => {
+
+const ProfessionalSignup = ({ input, setInput }) => {
 
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
 
+    const changeUrlHandler = (e) => {
+        setInput({
+            ...input,
+            url: {
+                ...input.url,
+                [e.target.name]: e.target.value
+            }
+        });
+    };
+    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
     };
+
 
     return (
         <div className="flex flex-col w-full items-center justify-start h-screen ">
@@ -24,9 +39,28 @@ const ProfessionalSignup = ({input, setInput}) => {
 
                 <div className="flex flex-1 gap-4 w-full">
                     <div className="flex flex-1 h-full w-full overflow-y-auto">
-                        <ExperienceForm input={input} setInput={setInput}  />
+                        <ExperienceForm input={input} setInput={setInput} />
                     </div>
+
+
                     <div className="flex flex-1 flex-col items-start justify-start w-full gap-3">
+                    <Label className="mt-4">
+                            Role
+                        </Label>
+                        <div className="flex flex-col w-full mb-4">
+                        <RadioGroup value={input.role} onValueChange={(val) => setInput({ ...input, role: val })}>                                <div className="flex items-center gap-10">
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="Employee" id="Employee" />
+                                        <Label htmlFor="Employee">Employee</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="Recruiter" id="Recruiter" />
+                                        <Label htmlFor="Recruiter">Recruiter</Label>
+                                    </div>
+                                </div>
+                            </RadioGroup>
+                        </div>
+
                         <div className="flex flex-col w-full">
                             <Label htmlFor="resume" className="mb-1">Resume</Label>
                             <div className="relative">
@@ -37,28 +71,27 @@ const ProfessionalSignup = ({input, setInput}) => {
                                     name="resume"
                                     value={input.resume}
                                     onChange={changeEventHandler}
-                                    required
                                     className="pl-10"
                                 />
-                                <File className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <File className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
                         <Label className="-mb-1 mt-4">
                             Url
-                            <span className="text-red-500 font-normal text-xs">(LinkedIn, GitHub - required)</span>    
+                            <span className="text-red-500 font-normal text-xs">(LinkedIn, GitHub - required)</span>
                         </Label>
                         <div className="flex flex-col w-full">
                             <div className="relative">
                                 <Input
                                     type="text"
                                     placeholder="LinkedIn"
-                                    name="linkedin"
+                                    name="linkedIn"
                                     value={input.url.linkedIn}
-                                    onChange={changeEventHandler}
+                                    onChange={changeUrlHandler}
                                     required
                                     className="pl-10"
                                 />
-                                <Linkedin className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <Linkedin className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
                         <div className="flex flex-col w-full">
@@ -68,11 +101,11 @@ const ProfessionalSignup = ({input, setInput}) => {
                                     placeholder="GitHub"
                                     name="gitHub"
                                     value={input.url.gitHub}
-                                    onChange={changeEventHandler}
+                                    onChange={changeUrlHandler}
                                     required
                                     className="pl-10"
                                 />
-                                <Github className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <Github className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
                         <div className="flex flex-col w-full">
@@ -82,11 +115,10 @@ const ProfessionalSignup = ({input, setInput}) => {
                                     placeholder="Twitter"
                                     name="twitter"
                                     value={input.url.twitter}
-                                    onChange={changeEventHandler}
-                                    required
+                                    onChange={changeUrlHandler}
                                     className="pl-10"
                                 />
-                                <Twitter className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <Twitter className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
                         <div className="flex flex-col w-full">
@@ -96,11 +128,10 @@ const ProfessionalSignup = ({input, setInput}) => {
                                     placeholder="Portfolio"
                                     name="portfolio"
                                     value={input.url.portfolio}
-                                    onChange={changeEventHandler}
-                                    required
+                                    onChange={changeUrlHandler}
                                     className="pl-10"
                                 />
-                                <Link className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <Link className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
                     </div>

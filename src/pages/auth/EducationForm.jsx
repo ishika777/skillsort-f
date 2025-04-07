@@ -2,13 +2,14 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 
-const EducationForm = ({input, setInput}) => {
+const EducationForm = ({ input, setInput, submitted, setSubmitted }) => {
 
     const handleChange = (index, field, value) => {
         const newEducations = input.education.map((edu, i) => {
-            if (i === index) {  
+            if (i === index) {
                 return { ...edu, [field]: value };
             }
             return edu;
@@ -21,8 +22,8 @@ const EducationForm = ({input, setInput}) => {
         setInput((prevInput) => ({
             ...prevInput,
             education: [
-                ...prevInput.education, 
-                { degree: "", institution: "", startDate: "", endDate: "" }
+                ...prevInput.education,
+                { degree: "", institution: "", startYear: "", endYear: "" }
             ]
         }));
     };
@@ -35,21 +36,41 @@ const EducationForm = ({input, setInput}) => {
         }));
     };
 
+    const submitHandler = () => {
+        const hasEmptyField = input.education.some((edu) => {
+            return (
+                edu.degree === "" ||
+                edu.institution === "" ||
+                edu.startYear === "" ||
+                edu.endYear === ""
+            );
+        });
+        if (hasEmptyField) {
+            toast.error("Please fill all the education fields.");
+            return;
+        }
+        setSubmitted(true);
+    }
+
     return (
         <div className="flex flex-col overflow-y-auto items-start  justify-end w-full h-fit bg-white">
 
-
             <div className="flex gap-3 mb-4 items-center">
                 <Label className="mb-1">Education</Label>
-                <div className="flex justify-center">
-                    <Button type="button" onClick={addEducation} className="flex items-center gap-2">
-                        <PlusCircle size={18} /> Add Education
-                    </Button>
-                </div>
+                {
+                    !submitted && (
+
+                        <div className="flex justify-center">
+                            <Button type="button" onClick={addEducation} className="flex items-center gap-2">
+                                <PlusCircle size={18} /> Add Education
+                            </Button>
+                        </div>
+                    )
+                }
             </div>
 
 
-            <form className="">
+            <div>
                 {input.education.map((edu, index) => (
                     <div key={index} className="flex items-center justify-between w-full gap-4 p-4 rounded-lg relative">
                         <div>
@@ -77,23 +98,27 @@ const EducationForm = ({input, setInput}) => {
                         </div>
 
                         <div>
-                            <Label className="mb-1" htmlFor={`startDate-${index}`}>Start Date</Label>
+                            <Label className="mb-1" htmlFor={`startYear-${index}`}>Start Year</Label>
                             <Input
-                                id={`startDate-${index}`}
-                                type="date"
-                                value={edu.startDate}
-                                onChange={(e) => handleChange(index, "startDate", e.target.value)}
+                                id={`startYear-${index}`}
+                                type="number"
+                                min="1900" max="2099"
+                                step="1"
+                                value={edu.startYear}
+                                onChange={(e) => handleChange(index, "startYear", e.target.value)}
                                 required
                             />
                         </div>
 
                         <div>
-                            <Label className="mb-1" htmlFor={`endDate-${index}`}>End Date</Label>
+                            <Label className="mb-1" htmlFor={`endYear-${index}`}>End Year</Label>
                             <Input
-                                id={`endDate-${index}`}
-                                type="date"
-                                value={edu.endDate}
-                                onChange={(e) => handleChange(index, "endDate", e.target.value)}
+                                id={`endYear-${index}`}
+                                type="number"
+                                min="1900" max="2099"
+                                step="1"
+                                value={edu.endYear}
+                                onChange={(e) => handleChange(index, "endYear", e.target.value)}
                             />
                         </div>
 
@@ -109,10 +134,14 @@ const EducationForm = ({input, setInput}) => {
                     </div>
                 ))}
 
-                <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium">
-                    Submit
-                </Button>
-            </form>
+                {
+                    !submitted && (
+                        <Button onClick={submitHandler} type="button" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium">
+                            Submit
+                        </Button>
+                    )
+                }
+            </div>
         </div>
     );
 }

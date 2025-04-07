@@ -6,10 +6,12 @@ import { Eye, EyeOff, Mail, PhoneCall, User2, LockKeyhole, UploadCloud } from "l
 import EducationForm from "./EducationForm";
 import SignupNav from "./SignupNav";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
-const PersonalSignup = ({input, setInput}) => {
+const PersonalSignup = ({input, setInput, setActiveTab}) => {
     const navigate = useNavigate();
     const [seePassword, setSeePassword] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
     
 
     const changeHandler = (e) => {
@@ -23,9 +25,15 @@ const PersonalSignup = ({input, setInput}) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        navigate("")
 
+        if(!submitted){
+            toast.error("Please fill in the education details before proceeding.");
+            return;
+        }
+        
         console.log("Form Data:", input);
+        setActiveTab("professional"); 
+
     };
 
     return (
@@ -36,7 +44,6 @@ const PersonalSignup = ({input, setInput}) => {
                 <div className="flex flex-1 flex-col gap-4 w-full">
                     <div className="flex items-center justify-between w-full gap-7">
                         <div className="flex flex-col w-full">
-
                             <Label htmlFor="fullname" className="mb-1">Full Name</Label>
                             <div className="relative">
                                 <Input
@@ -49,7 +56,7 @@ const PersonalSignup = ({input, setInput}) => {
                                     required
                                     className="pl-10"
                                 />
-                                <User2 className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <User2 className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
 
@@ -66,7 +73,7 @@ const PersonalSignup = ({input, setInput}) => {
                                     required
                                     className="pl-10"
                                 />
-                                <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <Mail className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
                     </div>
@@ -84,11 +91,11 @@ const PersonalSignup = ({input, setInput}) => {
                                     required
                                     className="pl-10"
                                 />
-                                <LockKeyhole className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <LockKeyhole className="absolute left-3 top-2.5 h-5 w-5" />
                                 <button
                                     type="button"
                                     onClick={() => setSeePassword(!seePassword)}
-                                    className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                                    className="absolute right-3 top-2.5"
                                 >
                                     {seePassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                 </button>
@@ -108,12 +115,10 @@ const PersonalSignup = ({input, setInput}) => {
                                     required
                                     className="pl-10"
                                 />
-                                <PhoneCall className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                <PhoneCall className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
                     </div>
-
-
 
                     <div className="flex flex-1 w-full items-center col-span-2 justify-between">
                         <div className="flex mr-40 ml-15 flex-col  items-center justify-start mb-1  sm:col-span-2">
@@ -132,12 +137,12 @@ const PersonalSignup = ({input, setInput}) => {
                                 </div>
                                 <Label htmlFor="profilePicture" className="absolute -top-2 -left-2 opacity-0 hover:opacity-100 cursor-pointer p-2 rounded-lg flex items-center">
                                     <div className="relative bg-white opacity-40 h-35 w-35 rounded-full flex items-center justify-between">
-                                        <UploadCloud className="absolute top-12 left-12 h-10 w-10 text-gray-400 mr-2" />
+                                        <UploadCloud className="absolute top-12 left-12 h-10 w-10 mr-2" />
                                     </div>
                                 </Label>
                             </div>
                         </div>
-                        <EducationForm input={input} setInput={setInput} />
+                        <EducationForm submitted={submitted} setSubmitted={setSubmitted} input={input} setInput={setInput} />
                     </div>
                 </div>
 

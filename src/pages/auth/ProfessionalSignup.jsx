@@ -6,11 +6,16 @@ import SignupNav from "./SignupNav";
 import ExperienceForm from "./ExperienceForm";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useState } from "react";
+import { signup } from "@/actions/user-actions";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 
 
 const ProfessionalSignup = ({ input, setInput }) => {
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
@@ -24,11 +29,19 @@ const ProfessionalSignup = ({ input, setInput }) => {
             }
         });
     };
-    
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(input);
+        try {
+            const success = await signup(dispatch, input);
+            if (success) {
+                navigate("/verify-email");
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
 
@@ -44,11 +57,12 @@ const ProfessionalSignup = ({ input, setInput }) => {
 
 
                     <div className="flex flex-1 flex-col items-start justify-start w-full gap-3">
-                    <Label className="mt-4">
+                        <Label className="mt-4">
                             Role
                         </Label>
                         <div className="flex flex-col w-full mb-4">
-                        <RadioGroup value={input.role} onValueChange={(val) => setInput({ ...input, role: val })}>                                <div className="flex items-center gap-10">
+                            <RadioGroup value={input.role} onValueChange={(val) => setInput({ ...input, role: val })}>
+                                <div className="flex items-center gap-10">
                                     <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="Employee" id="Employee" />
                                         <Label htmlFor="Employee">Employee</Label>

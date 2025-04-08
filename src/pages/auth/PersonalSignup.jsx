@@ -8,11 +8,12 @@ import SignupNav from "./SignupNav";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-const PersonalSignup = ({input, setInput, setActiveTab}) => {
+const PersonalSignup = ({ input, setInput, setActiveTab }) => {
     const navigate = useNavigate();
     const [seePassword, setSeePassword] = useState(false);
     const [submitted, setSubmitted] = useState(false);
-    
+    const [profilePicture, setProfilePicture] = useState(null);
+
 
     const changeHandler = (e) => {
         const { name, value } = e.target;
@@ -20,19 +21,26 @@ const PersonalSignup = ({input, setInput, setActiveTab}) => {
     };
 
     const fileHandler = (e) => {
-        setInput({ ...input, profilePicture: e.target.files[0] });
+        const file = e.target.files[0];
+        const reader = new FileReader();
+    
+        reader.onloadend = () => {
+            // No need for async/await here
+            setInput((prev) => ({
+                ...prev,
+                profilePicture: reader.result,
+            }));
+        };
+        reader.readAsDataURL(file);
     };
 
     const submitHandler = (e) => {
         e.preventDefault();
-
-        if(!submitted){
+        if (!submitted) {
             toast.error("Please fill in the education details before proceeding.");
             return;
         }
-        
-        console.log("Form Data:", input);
-        setActiveTab("professional"); 
+        setActiveTab("professional");
 
     };
 
@@ -61,7 +69,7 @@ const PersonalSignup = ({input, setInput, setActiveTab}) => {
                         </div>
 
                         <div className="flex flex-col w-full">
-                            <Label  className="mb-1" htmlFor="email">Email</Label>
+                            <Label className="mb-1" htmlFor="email">Email</Label>
                             <div className="relative">
                                 <Input
                                     id="email"
@@ -79,7 +87,7 @@ const PersonalSignup = ({input, setInput, setActiveTab}) => {
                     </div>
                     <div className="flex items-center justify-between w-full mb-5 gap-7">
                         <div className="flex flex-col w-full">
-                            <Label  className="mb-1" htmlFor="password">Password</Label>
+                            <Label className="mb-1" htmlFor="password">Password</Label>
                             <div className="relative">
                                 <Input
                                     id="password"
@@ -122,7 +130,7 @@ const PersonalSignup = ({input, setInput, setActiveTab}) => {
 
                     <div className="flex flex-1 w-full items-center col-span-2 justify-between">
                         <div className="flex mr-40 ml-15 flex-col  items-center justify-start mb-1  sm:col-span-2">
-                            <Label  className="mb-1" htmlFor="profilePicture">Profile Picture</Label>
+                            <Label className="mb-1" htmlFor="profilePicture">Profile Picture</Label>
                             <Input
                                 id="profilePicture"
                                 name="profilePicture"
@@ -130,14 +138,14 @@ const PersonalSignup = ({input, setInput, setActiveTab}) => {
                                 accept="image/*"
                                 onChange={fileHandler}
                                 className="hidden"
-                            />  
+                            />
                             <div className="relative">
-                                <div className="rounded-full h-34 w-34">
-                                    <img className={``} src="./profile.png" alt="" />
+                                <div className="rounded-full overflow-hidden h-39 w-39 ">
+                                    <img className={`h-40 mx-auto`} src={`${input.profilePicture === null ? "./new.png" : input.profilePicture}`} alt="" />
                                 </div>
                                 <Label htmlFor="profilePicture" className="absolute -top-2 -left-2 opacity-0 hover:opacity-100 cursor-pointer p-2 rounded-lg flex items-center">
-                                    <div className="relative bg-white opacity-40 h-35 w-35 rounded-full flex items-center justify-between">
-                                        <UploadCloud className="absolute top-12 left-12 h-10 w-10 mr-2" />
+                                    <div className="relative bg-white  opacity-20 h-39 w-39 rounded-full flex items-center justify-between">
+                                        <UploadCloud className="absolute top-15 left-15 h-10 w-10 mr-2" />
                                     </div>
                                 </Label>
                             </div>

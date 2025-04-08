@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom"
 import Home from "./pages/Home"
 import Login from "./pages/auth/Login"
-import Signup from "./pages/auth/Signup"
 import MainLayout from "./components/MainLayout"
 import { Navigate, RouterProvider } from "react-router"
 import ForgotPassword from "./pages/auth/advance auth/ForgotPassword"
@@ -14,6 +13,7 @@ import { initializeTheme } from "./store/themeSlice"
 import Loading from "./components/shared/Loading"
 import { useEffect } from "react"
 import SignupTabs from "./pages/auth/SignupTabs"
+import VerifyEmailManually from "./pages/auth/advance auth/VerifyEmailManually"
 
 const ProtectedRoutes = ({children}) => {
     const {isAuthenticated, user} = useSelector(state => state.user);
@@ -84,6 +84,11 @@ const appRouter = createBrowserRouter([
         path : "/verify-email",
         // element : <VerifyEmail />,
         element : <AuthenticatedUser><VerifyEmail /></AuthenticatedUser>,
+    },
+    {
+        path : "/verify-manual",
+        // element : <VerifyEmail />,
+        element : <AuthenticatedUser><VerifyEmailManually /></AuthenticatedUser>,
     },
     
 ])

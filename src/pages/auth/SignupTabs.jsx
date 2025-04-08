@@ -16,7 +16,7 @@ const SignupTabs = () => {
         password: "",
         contact: "",
         resume: "",
-        profilePicture: "",
+        profilePicture: null,
         url: {
             linkedIn: "",
             gitHub: "",

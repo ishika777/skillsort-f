@@ -22,11 +22,11 @@ const Login = () => {
     const [input, setInput] = useState({
         email: "",
         password: "",
-        recruiter: "false"
+        role: "Employee"
     });
 
     const handleRadioChange = (value) => {
-        setInput((prev) => ({ ...prev, recruiter: value }));
+        setInput((prev) => ({ ...prev, role: value }));
         if (errors.recruiter) {
             setErrors({ ...errors, recruiter: undefined });
         }
@@ -54,14 +54,14 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4">            
+        <div className="flex flex-col items-center justify-center min-h-screen p-4">
             <Card className="w-full min-w-[400px] border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-gray-800/20">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold text-center mx-auto">
                         <SignupNav />
                     </CardTitle>
                 </CardHeader>
-                
+
                 <CardContent>
                     <form onSubmit={loginSubmitHandler} className="space-y-4">
                         <div className="space-y-2">
@@ -113,18 +113,16 @@ const Login = () => {
 
                         <div className="space-y-2">
                             <Label>Role</Label>
-                            <RadioGroup 
-                                value={input.recruiter} 
-                                onValueChange={handleRadioChange}
-                                className="flex space-x-6 mt-4"
-                            >
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="false" id="employee" />
-                                    <Label htmlFor="employee" className="cursor-pointer">Employee</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="true" id="recruiter" />
-                                    <Label htmlFor="recruiter" className="cursor-pointer">Recruiter</Label>
+                            <RadioGroup value={input.role} onValueChange={handleRadioChange}>
+                                <div className="flex items-center gap-10">
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="Employee" id="Employee" />
+                                        <Label htmlFor="Employee">Employee</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="Recruiter" id="Recruiter" />
+                                        <Label htmlFor="Recruiter">Recruiter</Label>
+                                    </div>
                                 </div>
                             </RadioGroup>
                             {errors.recruiter && (
@@ -146,17 +144,23 @@ const Login = () => {
                                 "Log in"
                             )}
                         </Button>
-                        
+
+
                         <div className="text-center text-sm">
                             <Link to="/forgot-password" className="text-red-500 hover:text-red-600 font-medium">
-                                Forgot password?
+                                Forgot password
                             </Link>
                         </div>
-                        
+                        <div className="text-center text-sm">
+                            <Link to="/verify-email" className="text-red-500 hover:text-red-600 font-medium">
+                                Verify Email
+                            </Link>
+                        </div>
+
                         <div className="relative my-4">
                             <Separator className="my-4" />
                         </div>
-                        
+
                         <div className="text-center text-sm">
                             Don't have an account?{" "}
                             <Link to="/signup" className="text-red-500 hover:text-red-600 font-medium">

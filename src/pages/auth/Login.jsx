@@ -35,7 +35,6 @@ const Login = () => {
     const changeEventHandler = (e) => {
         const { name, value } = e.target;
         setInput({ ...input, [name]: value });
-        // Clear error for this field when user types
         if (errors[name]) {
             setErrors({ ...errors, [name]: undefined });
         }

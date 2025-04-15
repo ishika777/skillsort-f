@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import React from 'react'
 import { Home, FileText, Folder, Star, Settings } from "lucide-react";
-import Dashboard from "./Dashboard";
+import DashHome from "./DashHome";
 import ResumeAnalysis from "./ResumeAnalysis";
 import ShortlistedCandidates from "./ShortlistedCandidates";
 import JobPostings from "./JobPostings";
@@ -35,7 +35,7 @@ const Layout = () => {
                     </TabsList>
                 </div>
                 <div className="flex flex-1 bg-white">
-                    <TabsContent value="dashboard"><Dashboard /></TabsContent>
+                    <TabsContent value="dashboard"><DashHome /></TabsContent>
                     <TabsContent value="job"><JobPostings /></TabsContent>
                     <TabsContent value="resumeAnalysis"><ResumeAnalysis /></TabsContent>
                     <TabsContent value="shortlistedCnadidates"><ShortlistedCandidates /></TabsContent>

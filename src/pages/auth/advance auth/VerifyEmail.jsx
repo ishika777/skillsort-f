@@ -14,7 +14,7 @@ const VerifyEmail = () => {
     const [otp, setOtp] = useState(["", "", "", "", "", ""])
     const inputRef = useRef([])
     const navigate = useNavigate()
-    const { loading } = useSelector((state) => state.user);
+    const { loading, user } = useSelector((state) => state.user);
 
     const dispatch = useDispatch();
 
@@ -42,7 +42,12 @@ const VerifyEmail = () => {
         try {
             const success = await verifyEmail(dispatch, verificationCode)
             if (success) {
-                navigate("/")
+                if(user?.role === "Recruiter") {
+                    navigate("/admin")
+                }else{
+                    navigate("/")
+
+                }
             }
         } catch (error) {
             console.log(error)

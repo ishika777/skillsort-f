@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useSelector } from "react-redux";
 
 const jobs = [
   { id: "job1", title: "Frontend Developer" },
@@ -22,6 +23,9 @@ const candidates = {
 };
 
 const ShortlistedCandidates = () => {
+
+    // const {jobs} = useSelector((state) => state.job);
+
   const [selectedJob, setSelectedJob] = useState(jobs[0].id);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [showResume, setShowResume] = useState(false);

@@ -14,6 +14,7 @@ import Loading from "./components/shared/Loading"
 import { useEffect } from "react"
 import SignupTabs from "./pages/auth/SignupTabs"
 import VerifyEmailManually from "./pages/auth/advance auth/VerifyEmailManually"
+import { getAllJobs } from "./actions/job-actions"
 
 const ProtectedRoutes = ({children}) => {
     const {isAuthenticated, user} = useSelector(state => state.user);
@@ -36,10 +37,11 @@ const AuthenticatedUser = ({children}) => {
 
 const RecruiterProtectedRoute = ({children}) => {
     const {isAuthenticated, user} = useSelector(state => state.user);
+    console.log(user)
     if(!isAuthenticated){
         return <Navigate to="/login" replace />
     }
-    if(!user?.recruiter){
+    if(user?.role !== "Recruiter"){
         return <Navigate to="/" replace />
     }
     return children;
@@ -48,8 +50,8 @@ const RecruiterProtectedRoute = ({children}) => {
 const appRouter = createBrowserRouter([
     {
         path : "/",
-        // element : <MainLayout />,
-        element : <ProtectedRoutes><MainLayout /></ProtectedRoutes>,
+        element : <MainLayout />,
+        // element : <ProtectedRoutes><MainLayout /></ProtectedRoutes>,
         children : [
             {
                 path : "/",
@@ -57,8 +59,8 @@ const appRouter = createBrowserRouter([
             },
             {
                 path : "/admin",
-                // element : <AdminHome />,
-                element : <RecruiterProtectedRoute><AdminHome /></RecruiterProtectedRoute>,
+                element : <AdminHome />,
+                // element : <RecruiterProtectedRoute><AdminHome /></RecruiterProtectedRoute>,
             },
         ]
     },
@@ -98,10 +100,10 @@ function App() {
     const {isCheckingAuth, user} = useSelector(state => state.user);
     const dispatch = useDispatch();
 
-
     useEffect(() => {
         checkAuthentication(dispatch);
         initializeTheme()
+        getAllJobs(dispatch);
     }, [dispatch]);
 
     useEffect(() => {
@@ -113,8 +115,6 @@ function App() {
     if (isCheckingAuth) {
         return <Loading />;
     }
-
-
 
   return (
 

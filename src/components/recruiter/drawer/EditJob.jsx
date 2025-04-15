@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Loader2, Plus } from "lucide-react"
+import { Loader2, Pen } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -7,25 +7,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Drawer, DrawerDescription, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import { toast } from "sonner"
 import { useDispatch, useSelector } from "react-redux"
-import { createJob } from "@/actions/job-actions"
+import { editJob } from "@/actions/job-actions"
 
-export function NewJob() {
-
+const EditJob = ({job}) => {
     const { loading } = useSelector((state) => state.job)
     const [open, setOpen] = useState(false)
     const dispatch = useDispatch()
 
     const [input, setInput] = useState({
-        title: "",
-        jobType: "",
-        description: "",
-        skills: "",
-        experience: "",
-        qualification: "",
-        location: "",
-        salary: "",
-        deadline: "",
-        openings: 1,
+        id: job._id,
+        title: job.title,
+        jobType: job.jobType,
+        description: job.description,
+        skills: job.skills.join(","),
+        experience: job.experience,
+        qualification: job.qualification,
+        location: job.location,
+        salary: job.salary,
+        deadline: job.deadline.split("T")[0],
+        openings: job.openings,
     })
 
     const handleInputChange = (e) => {
@@ -33,7 +33,7 @@ export function NewJob() {
         setInput((prev) => ({ ...prev, [name]: value }))
     }
 
-    const submitHandler = async(e) => {
+    const submitHandler = async (e) => {
         e.preventDefault()
 
         if (!input.jobType) {
@@ -52,39 +52,42 @@ export function NewJob() {
             toast.error("Please select job location")
             return
         }
-        input.skills = input.skills.split(",").map(skill => skill.trim())
-
+        input.skills =  Array.isArray(input.skills) ? input.skills : input.skills.split(",").map(skill => skill.trim()),
         console.log(input)
         try {
-            const success = await createJob(dispatch, input);
-            if(success){
+            const success = await editJob(dispatch, input);
+            if (success) {
                 setInput({
-                    title: "",
-                    jobType: "",
-                    description: "",
-                    skills: "",
-                    experience: "",
-                    qualification: "",
-                    location: "",
-                    salary: "",
-                    deadline: "",
-                    openings: 1,
+                    title: job.title,
+                    jobType: job.jobType,
+                    description: job.description,
+                    skills: job.skills.join(","),
+                    experience: job.experience,
+                    qualification: job.qualification,
+                    location: job.location,
+                    salary: job.salary,
+                    deadline: job.deadline,
+                    openings: job.openings,
                 })
                 setOpen(false)
             }
         } catch (error) {
-            
+
         }
     }
+
 
 
     return (
         <Drawer direction="right" open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
-                <Button className="flex items-center gap-2">
-                    <Plus size={16} />
-                    New Job
+                <Button
+                    size="sm"
+                    className="bg-green-600 hover:bg-green-700"
+                >
+                    <Pen />
                 </Button>
+
             </DrawerTrigger>
             <DrawerContent aria-describedby="new-job-description" className="w-[450px] p-6 bg-white rounded-lg shadow-lg">
 
@@ -119,6 +122,7 @@ export function NewJob() {
                                 name="description"
                                 onChange={handleInputChange}
                                 placeholder="Job Description"
+                                value={input.description}
                                 className="col-span-2"
                                 required
                             />
@@ -196,14 +200,14 @@ export function NewJob() {
                             />
                         </div>
                         <DrawerFooter className="mt-4 w-full">
-                            <Button className="w-full"  disabled={loading}>
+                            <Button className="w-full" disabled={loading}>
                                 {loading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                         Please wait...
                                     </>
                                 ) : (
-                                    "Post Job"
+                                    "Save Changes"
                                 )}
                             </Button>
                         </DrawerFooter>
@@ -214,3 +218,5 @@ export function NewJob() {
         </Drawer>
     )
 }
+
+export default EditJob

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Home,
@@ -19,11 +19,14 @@ import ResumeBuilder from "./ResumeBuilder";
 import SkillDevelopment from "./SkillDevelopment";
 import EmployeeSettings from "./EmployeeSettings";
 import CoverLetter from "./CoverLetter";
+import JobDetails from "./JobDetails";
 
 const EmployeeLayout = () => {
+    const [selectedJob, setSelectedJob] = useState(null);
+    const [tabValue, setTabValue] = useState("dashboard");
     return (
         <div className="h-full w-full">
-            <Tabs defaultValue="dashboard" className="flex flex-row bg-gray-900 gap-0 h-full w-full">
+            <Tabs  value={tabValue} onValueChange={setTabValue}  className="flex flex-row bg-gray-900 gap-0 h-full w-full">
                 <div className="flex h-full">
                     <TabsList className="flex flex-col p-2 justify-start items-start bg-gray-900 rounded-none min-w-[200px] w-fit h-fit">
                         <TabsTrigger
@@ -80,13 +83,14 @@ const EmployeeLayout = () => {
 
                 <div className="flex flex-1 bg-white">
                     <TabsContent value="dashboard"><EmployeeDashHome /></TabsContent>
-                    <TabsContent value="jobs"><JobListings /></TabsContent>
+                    <TabsContent value="jobs"><JobListings setSelectedJob={setSelectedJob} setTabValue={setTabValue} /></TabsContent>
                     <TabsContent value="applications"><MyApplications /></TabsContent>
                     <TabsContent value="saved"><SavedJobs /></TabsContent>
                     <TabsContent value="resume"><ResumeBuilder /></TabsContent>
                     <TabsContent value="skills"><SkillDevelopment /></TabsContent>
                     <TabsContent value="settings"><EmployeeSettings /></TabsContent>
                     <TabsContent value="coverletter"><CoverLetter /></TabsContent>
+                    <TabsContent value="jobdetails"><JobDetails job={selectedJob} setTabValue={setTabValue}/></TabsContent>
                 </div>
             </Tabs>
         </div>

@@ -10,7 +10,7 @@ import DeleteJob from "./dialog/DeleteJob";
 
 const JobPostings = () => {
     const today = new Date().toISOString().split("T")[0];
-    const { jobs } = useSelector((state) => state.job);
+    const { jobsByRecruiter } = useSelector((state) => state.job);
     const dispatch = useDispatch();
 
     const [selectedJob, setSelectedJob] = useState(null);
@@ -44,12 +44,12 @@ const JobPostings = () => {
                         </TableHeader>
                         <TableBody>
                             {
-                                jobs?.length === 0 ? (
+                                jobsByRecruiter?.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={5} className="text-center">No job postings available</TableCell>
                                     </TableRow>
                                 ) : (
-                                    jobs?.map((job) => (
+                                    jobsByRecruiter?.map((job) => (
                                         <TableRow key={job._id}>
                                             <TableCell>{job.title}</TableCell>
                                             <TableCell>{job.jobType}</TableCell>

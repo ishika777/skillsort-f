@@ -1,4 +1,4 @@
-import { setLoading, setJobs, setJob} from "@/store/jobSlice";
+import { setLoading, setJobsByRecruiter, setAllJobs} from "@/store/jobSlice";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -20,7 +20,7 @@ export const createJob = async (dispatch, input) => {
         );
         if (response.data.success) {
             toast.success(response.data.message);
-            dispatch(setJobs(response.data.allJobs));
+            dispatch(setJobsByRecruiter(response.data.allJobs));
             return true;
         }
     } catch (error) {
@@ -32,6 +32,26 @@ export const createJob = async (dispatch, input) => {
     return false;
 }
 
+export const getAllPostedJobs = async (dispatch, id) => {
+    try {
+        const response = await axios.get(
+            `${USER_API_END_POINT}/${id}/jobs`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        if (response.data.success) {
+            dispatch(setJobsByRecruiter(response.data.allJobs));
+            return true;
+        }
+    } catch (error) {
+        console.log(error);
+        toast.error(error.response?.data.message || error.message);
+    }
+    return false;
+}
 export const getAllJobs = async (dispatch) => {
     try {
         const response = await axios.get(
@@ -43,7 +63,7 @@ export const getAllJobs = async (dispatch) => {
             }
         );
         if (response.data.success) {
-            dispatch(setJobs(response.data.allJobs));
+            dispatch(setAllJobs(response.data.allJobs));
             return true;
         }
     } catch (error) {
@@ -67,7 +87,7 @@ export const editJob = async (dispatch, input) => {
         );
         if (response.data.success) {
             toast.success(response.data.message);
-            dispatch(setJobs(response.data.allJobs));
+            dispatch(setJobsByRecruiter(response.data.allJobs));
             return true;
         }
     } catch (error) {

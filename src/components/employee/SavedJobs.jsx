@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BookmarkMinus, MapPin, Calendar, Building2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 const SavedJobs = () => {
-  const [savedJobs, setSavedJobs] = useState([]);
 
-  useEffect(() => {
-    // Replace with real API call to fetch saved jobs
-    const fetchSavedJobs = async () => {
-      const data = [
+
+    // const {savedJobs} = useSelector((state) => state.job);
+  const [savedJobs, setSavedJobs] = useState([
         {
           id: 1,
           title: "UI/UX Designer",
@@ -26,12 +25,15 @@ const SavedJobs = () => {
           savedDate: "2025-04-09",
           salary: "₹60,000 - ₹90,000",
         },
-      ];
-      setSavedJobs(data);
-    };
+      ]);
 
-    fetchSavedJobs();
-  }, []);
+
+      /////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////
+      //unsave all ka option
 
   const handleUnsave = (id) => {
     setSavedJobs((prev) => prev.filter((job) => job.id !== id));

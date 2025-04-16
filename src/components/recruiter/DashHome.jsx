@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 
 export default function DashHome() {
 
-    const {jobs} = useSelector((state) => state.job);
-    const activeJobs = jobs?.filter((job) => job.deadline.split("T")[0] > new Date().toISOString().split("T")[0]).length || 0;
-    const expiredJobs = jobs?.length - activeJobs.length || 0;
+    const {jobsByRecruiter} = useSelector((state) => state.job);
+    const activeJobs = jobsByRecruiter?.filter((job) => job.deadline.split("T")[0] > new Date().toISOString().split("T")[0]).length || 0;
+    const expiredJobs = jobsByRecruiter?.length - activeJobs.length || 0;
     return (
         <div className="tabs-scroll p-6 space-y-6 overflow-y-auto w-full h-[calc(100vh-64px)]">
 

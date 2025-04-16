@@ -20,6 +20,7 @@ export const saveJob = async (id) => {
         );
         if (response.data.success) {
             toast.success(response.data.message);
+            dispatch(setSavedJobs(response.data.allSavedJobs));
             return true;
         }
     } catch (error) {
@@ -41,6 +42,7 @@ export const unsaveJob = async (id) => {
         );
         if (response.data.success) {
             toast.success(response.data.message);
+            dispatch(setSavedJobs(response.data.allSavedJobs));
             return true;
         }
     } catch (error) {
@@ -60,7 +62,7 @@ export const getSavedJobs = async (dispatch) => {
             }
         );
         if (response.data.success) {
-            dispatch(setSavedJobs(response.data.savedJobs));
+            dispatch(setSavedJobs(response.data.allSavedJobs));
             return true;
         }
     } catch (error) {

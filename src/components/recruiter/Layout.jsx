@@ -5,7 +5,7 @@ import DashHome from "./DashHome";
 import ResumeAnalysis from "./ResumeAnalysis";
 import ShortlistedCandidates from "./ShortlistedCandidates";
 import JobPostings from "./JobPostings";
-import RecruiterSettings from "./RecruiterSettings";
+import SettingsDetails from "../shared/Settings";
 
 
 const Layout = () => {
@@ -39,7 +39,7 @@ const Layout = () => {
                     <TabsContent value="job"><JobPostings /></TabsContent>
                     <TabsContent value="resumeAnalysis"><ResumeAnalysis /></TabsContent>
                     <TabsContent value="shortlistedCnadidates"><ShortlistedCandidates /></TabsContent>
-                    <TabsContent value="settings"><RecruiterSettings /></TabsContent>
+                    <TabsContent value="settings"><SettingsDetails /></TabsContent>
                 </div>
             </Tabs>
         </div>

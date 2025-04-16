@@ -17,7 +17,7 @@ const ChangePassword = () => {
     <div className='w-full'>
         <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
     <DialogTrigger asChild>
-      <Button className="w-full">Change Password</Button>
+      <Button className="w-full bg-red-500 text-white hover:bg-red-600">Change Password</Button>
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>

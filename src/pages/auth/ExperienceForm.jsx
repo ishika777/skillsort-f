@@ -119,13 +119,18 @@ export default function ExperienceForm({input, setInput}) {
                             />
                         </div>
 
-                        <button
-                            type="button"
-                            onClick={() => removeExperience(index)}
-                            className="absolute top-2 right-2 text-red-500 hover:text-red-600"
-                        >
-                            <Trash2 size={20} />
-                        </button>
+                        {
+                            !submitted && (
+                                <button
+                                type="button"
+                                onClick={() => removeExperience(index)}
+                                className="absolute top-2 right-2 text-red-500 hover:text-red-600"
+                            >
+                                <Trash2 size={20} />
+                            </button>
+                            )
+                        }
+                      
                     </div>
                 ))}
 

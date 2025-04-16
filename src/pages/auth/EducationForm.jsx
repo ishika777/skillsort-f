@@ -102,6 +102,7 @@ const EducationForm = ({ input, setInput, submitted, setSubmitted }) => {
                             <Input
                                 id={`startYear-${index}`}
                                 type="number"
+                                placeholder="XXXX"
                                 min="1900" max="2099"
                                 step="1"
                                 value={edu.startYear}
@@ -115,6 +116,7 @@ const EducationForm = ({ input, setInput, submitted, setSubmitted }) => {
                             <Input
                                 id={`endYear-${index}`}
                                 type="number"
+                                placeholder="XXXX"
                                 min="1900" max="2099"
                                 step="1"
                                 value={edu.endYear}
@@ -122,7 +124,7 @@ const EducationForm = ({ input, setInput, submitted, setSubmitted }) => {
                             />
                         </div>
 
-                        {index > 0 && (
+                        {index > 0 && !submitted && (
                             <button
                                 type="button"
                                 onClick={() => removeEducation(index)}

@@ -221,27 +221,30 @@ export const resetPassword = async (dispatch, resetToken, newPassword) => {
     }
     return false;
 }
+export const updatePersonalDetails = async (dispatch, input) => {
+    try {
+        dispatch(setLoading(true))
 
-// export const updateProfile = async (dispatch, input) => {
-//     try {
-//         const response = await axios.put(
-//             `${USER_API_END_POINT}/profile/update`,
-//             input,
-//             {
-//                 headers: {
-//                     "Content-Type": "application/json",
-//                 },
-//             }
-//         );
-//         if (response.data.success) {
-//             toast.success(response.data.message);
-            // set({user: response.data.user, isAuthenticated: true});
-//             return true;
-//         }
-//     } catch (error) {
-//         console.log(error);
-//         ({ loading: false });
-//         toast.error(error.response?.data.message || error.message);
-//     }
-//     return false;
-// }
+        const response = await axios.put(
+            `${USER_API_END_POINT}/profile/update/personal`,
+            input,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        if (response.data.success) {
+            toast.success(response.data.message);
+            dispatch(setUser(response.data.updatedUser))
+            // return true;
+        }
+    } catch (error) {
+        console.log(error);
+        toast.error(error.response?.data.message || error.message);
+    } finally{
+        dispatch(setLoading(false))
+    }
+    return false;
+}
+

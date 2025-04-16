@@ -14,7 +14,7 @@ body {
 }
 
 button{
-    @apply cursor-pointer
+    @apply cursor-pointer 
 }
 
 .tabs-scroll{

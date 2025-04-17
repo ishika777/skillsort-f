@@ -38,15 +38,17 @@ const EducationForm = ({ input, setInput, submitted, setSubmitted }) => {
 
     const submitHandler = () => {
         const hasEmptyField = input.education.some((edu) => {
-            return (
-                edu.degree === "" ||
-                edu.institution === "" ||
-                edu.startYear === "" ||
-                edu.endYear === ""
-            );
+            return ( !edu.degree || !edu.institution || !edu.startYear || !edu.endYear);
         });
+        const invalidTimeline = input.education.some((edu) => {
+            return Number(edu.startYear) >= Number(edu.endYear)
+        })
         if (hasEmptyField) {
             toast.error("Please fill all the education fields.");
+            return;
+        }
+        if (invalidTimeline) {
+            toast.error("Enter valid timeline!");
             return;
         }
         setSubmitted(true);

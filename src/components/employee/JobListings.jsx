@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Briefcase, MapPin, Calendar, Building2, Bookmark, BadgeCheck, BookmarkMinus } from "lucide-react";
 import { useSelector } from "react-redux";
 import { saveJob, unsaveJob } from "@/actions/saveJob-action";
+import ApplyJob from "./drawer/applyJob";
 
 const JobListings = ({ setSelectedJob, setTabValue }) => {
 
@@ -84,9 +85,7 @@ const JobListings = ({ setSelectedJob, setTabValue }) => {
                                 ))}
                             </div>
 
-                            <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                                Apply Now
-                            </button>
+                            <ApplyJob />
                         </div>
                     ))}
                 </div>

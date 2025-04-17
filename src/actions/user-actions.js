@@ -237,7 +237,58 @@ export const updatePersonalDetails = async (dispatch, input) => {
         if (response.data.success) {
             toast.success(response.data.message);
             dispatch(setUser(response.data.updatedUser))
-            // return true;
+        }
+    } catch (error) {
+        console.log(error);
+        toast.error(error.response?.data.message || error.message);
+    } finally{
+        dispatch(setLoading(false))
+    }
+    return false;
+}
+
+export const updateEducationalDetails = async (dispatch, input) => {
+    try {
+        dispatch(setLoading(true))
+
+        const response = await axios.put(
+            `${USER_API_END_POINT}/profile/update/education`,
+            input,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        if (response.data.success) {
+            toast.success(response.data.message);
+            dispatch(setUser(response.data.updatedUser))
+        }
+    } catch (error) {
+        console.log(error);
+        toast.error(error.response?.data.message || error.message);
+    } finally{
+        dispatch(setLoading(false))
+    }
+    return false;
+}
+
+export const updateExperienceDetails = async (dispatch, input) => {
+    try {
+        dispatch(setLoading(true))
+
+        const response = await axios.put(
+            `${USER_API_END_POINT}/profile/update/experience`,
+            input,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        if (response.data.success) {
+            toast.success(response.data.message);
+            dispatch(setUser(response.data.updatedUser))
         }
     } catch (error) {
         console.log(error);

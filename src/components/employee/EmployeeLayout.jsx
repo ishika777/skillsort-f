@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-    Home,
-    Briefcase,
-    FileText,
-    Bookmark,
-    FilePlus,
-    GraduationCap,
-    Bell,
-    Settings,
-} from "lucide-react";
+import { Home, Briefcase, FileText, Bookmark, FilePlus, Settings } from "lucide-react";
 
 import EmployeeDashHome from "./EmployeeDashHome";
 import JobListings from "./JobListings";
 import MyApplications from "./MyApplications";
 import SavedJobs from "./SavedJobs";
 import ResumeBuilder from "./ResumeBuilder";
-import SkillDevelopment from "./SkillDevelopment";
 import CoverLetter from "./CoverLetter";
 import JobDetails from "./JobDetails";
 import SettingsDetails from "../shared/Settings";

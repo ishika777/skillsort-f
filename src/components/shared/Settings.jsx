@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Globe, Clock, GithubIcon, LinkedinIcon, Twitter } from "lucide-react";
 import { useSelector } from "react-redux";
-import SettingsDetails from "../shared/SettingsDetails";
+import SettingsTabs from "./SettingsTabs";
 
 const Settings = () => {
     const { user } = useSelector((state) => state.user)
@@ -99,7 +99,7 @@ const Settings = () => {
                 </div>
 
                 <div className="lg:col-span-2">
-                    <SettingsDetails formatDate={formatDate} />
+                    <SettingsTabs formatDate={formatDate} />
                 </div>
             </div>
         </div>

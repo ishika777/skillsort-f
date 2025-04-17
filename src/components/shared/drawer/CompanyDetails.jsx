@@ -1,22 +1,15 @@
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTrigger,
-    DrawerTitle,
-    DrawerDescription
-} from "@/components/ui/drawer";
+import {Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTrigger, DrawerTitle, DrawerDescription} from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Edit, Loader2, PlusCircle, Trash2 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { useState } from "react";
+import { updateExperienceDetails } from "@/actions/user-actions";
 
 const ExperienceDetails = () => {
+    const dispatch = useDispatch()
     const { user, loading } = useSelector((state) => state.user);
 
     const [input, setInput] = useState(user?.experience);
@@ -28,24 +21,33 @@ const ExperienceDetails = () => {
     };
 
     const addExperience = () => {
-        setInput((prev) => [
-            ...prev,
-            {
-                jobTitle: "",
-                companyName: "",
-                startDate: "",
-                endDate: "",
-                description: ""
-            }
-        ]);
+        setInput((prev) => [...prev, { jobTitle: "", companyName: "", startDate: "", endDate: "", description: ""}]);
     };
 
     const removeExperience = (index) => {
         setInput((prev) => prev.filter((_, i) => i !== index));
     };
 
-    const submitHandler = () => {
-
+    const submitHandler = async() => {
+        const hasEmptyField = input.some((exp) => {
+            return (!exp.jobTitle || !exp.companyName || !exp.startDate || !exp.endDate || !exp.description);
+        });
+        const invalidTimeline = input.some((exp) => {
+            return exp.startDate >= exp.endDate
+        })
+        if (hasEmptyField) {
+            toast.error("Please fill all the education fields.");
+            return;
+        }
+        if (invalidTimeline) {
+            toast.error("Enter valid timeline!");
+            return;
+        }
+        try {
+            await updateExperienceDetails(dispatch, input)
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     return (

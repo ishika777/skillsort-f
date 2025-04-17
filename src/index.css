@@ -25,7 +25,7 @@ button{
 }
 
 input{
-    @apply bg-white outline-none border-transparent border-2 focus:border-black focus:border-2 focus:ring-0;
+    @apply bg-white outline-none border-gray-200 border-2 focus:border-black focus:border-2 focus:ring-0;
 }
 
 input[type="number"]::-webkit-outer-spin-button,

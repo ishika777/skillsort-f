@@ -4,7 +4,7 @@ import OverviewTab from './tabs/OverviewTab';
 import EducationTab from './tabs/EducationTab';
 import ExperienceTab from './tabs/ExperienceTab';
 
-const SettingsDetails = ({formatDate }) => {
+const SettingsTabs = ({formatDate }) => {
 
     const [activeTab, setActiveTab] = useState("overview");
 
@@ -23,4 +23,4 @@ const SettingsDetails = ({formatDate }) => {
     )
 }
 
-export default SettingsDetails
+export default SettingsTabs

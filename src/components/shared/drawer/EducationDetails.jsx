@@ -6,38 +6,52 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Edit, Loader2, PlusCircle, Trash2 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { useState } from "react";
+import { updateEducationalDetails } from "@/actions/user-actions";
 
 const EducationDetails = () => {
+
+    const dispatch = useDispatch();
     const { user, loading } = useSelector((state) => state.user);
-
-    const [input, setInput] = useState(user?.education);
-
+    const [input, setInput] = useState(() => user?.education?.map(e => ({ ...e })));
 
     const handleChange = (index, field, value) => {
         const updated = [...input];
         updated[index][field] = value;
-        setEducation(updated);
+        setInput(updated);
     };
 
-
     const addEducation = () => {
-        setInput((prev) => [
-            ...prev,
-            { degree: "", institution: "", startYear: "", endYear: "" }
-        ]);
+        setInput((prev) => [...prev, { degree: "", institution: "", startYear: "", endYear: "" }]);
     };
 
     const removeEducation = (index) => {
         setInput((prev) => prev.filter((_, i) => i !== index));
     };
 
-
-    const submitHandler = () => {
+    const submitHandler = async() => {
+        const hasEmptyField = input.some((edu) => {
+            return ( !edu.degree || !edu.institution || !edu.startYear || !edu.endYear);
+        });
+        const invalidTimeline = input.some((edu) => {
+            return Number(edu.startYear) >= Number(edu.endYear) 
+        })
+        if (hasEmptyField) {
+            toast.error("Please fill all the education fields.");
+            return;
+        }
+        if (invalidTimeline) {
+            toast.error("Enter valid timeline!");
+            return;
+        }
         
-
+        try {
+            await updateEducationalDetails(dispatch, input)
+        } catch (error) {
+            console.log(error)
+        }
     };
 
 

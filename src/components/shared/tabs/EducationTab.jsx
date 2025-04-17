@@ -1,8 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Edit, Calendar, Building, GraduationCap, BookOpen } from "lucide-react";
+import { Calendar, Building, GraduationCap, BookOpen } from "lucide-react";
 import EducationDetails from '../drawer/EducationDetails';
 
 const EducationTab = () => {
@@ -26,20 +25,17 @@ const EducationTab = () => {
                                         <GraduationCap className="h-5 w-5 mr-2 text-red-500 mt-1" />
                                         <div>
                                             <h3 className="font-medium text-lg">{edu.degree}</h3>
-                                            <div className="flex items-center text-gray-500">
+                                            <div className="flex items-center text-gray-600">
                                                 <Building className="h-4 w-4 mr-1" />
                                                 <span className="text-sm">{edu.institution}</span>
                                             </div>
-                                            <div className="flex items-center text-gray-500 mt-1">
+                                            <div className="flex items-center text-gray-600 mt-1">
                                                 <Calendar className="h-4 w-4 mr-1" />
                                                 <span className="text-sm">{edu.startYear} - {edu.endYear}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <Button variant="ghost" size="sm">
-                                    <Edit className="h-4 w-4" />
-                                </Button>
                             </div>
                         ))}
                     </div>

@@ -23,7 +23,7 @@ const JobPostings = () => {
 
 
     return (
-        <div className="tabs-scroll flex w-full overflow-y-auto h-[calc(100vh-64px)]">
+        <div className="tabs-scroll flex w-full overflow-y-auto h-[calc(100vh-64px)] pt-4">
             <main className="flex-1 p-6">
                 <div className="mb-3">
 

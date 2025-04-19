@@ -33,7 +33,7 @@ const ShortlistedCandidates = () => {
   const [interviewDate, setInterviewDate] = useState("");
 
   return (
-    <div className="tabs-scroll w-full p-6 overflow-y-auto h-[calc(100vh-64px)]">
+    <div className="tabs-scroll w-full p-6 overflow-y-auto h-[calc(100vh-64px)] pt-4">
       <h2 className="text-2xl font-semibold mb-4">📌 Shortlisted Candidates</h2>
 
       {/* Job Selection Dropdown */}

@@ -5,11 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Globe, Clock, GithubIcon, LinkedinIcon, Twitter } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SettingsTabs from "./SettingsTabs";
 
 const Settings = () => {
     const { user } = useSelector((state) => state.user)
+    const dispatch = useDispatch()
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString("en-US", {
@@ -19,9 +20,14 @@ const Settings = () => {
         });
     };
 
-    const getInitials = (name) => {
-        return name.split(" ").map(part => part[0]).join("").toUpperCase();
-    };
+    const logoutHandler = async () => {
+        const res = await logout(dispatch);
+        if(res){
+            navigate("/login")
+        }
+    }
+
+    const inittials = user.fullname.split(" ").map(part => part[0]).join("").toUpperCase();
 
     return (
         <div className="tabs-scroll p-6 space-y-6 overflow-y-auto w-full h-[calc(100vh-64px)]">
@@ -31,9 +37,9 @@ const Settings = () => {
                         <CardHeader className="flex flex-col items-center pb-2">
                             <div className="relative mb-2">
                                 <Avatar className="h-24 w-24">
-                                    <AvatarImage src="/api/placeholder/150/150" alt={user.fullname} />
+                                    <AvatarImage src={user?.profilePicture} />
                                     <AvatarFallback className="text-lg bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-200">
-                                        {getInitials(user.fullname)}
+                                        {inittials}
                                     </AvatarFallback>
                                 </Avatar>
                             </div>
@@ -73,14 +79,25 @@ const Settings = () => {
                             </div>
 
                             {user.resume && (
-                                <Button variant="outline" className="w-full">
-                                    View Resume
-                                </Button>
+                                <a
+                                href="https://res.cloudinary.com/ishika05/raw/upload/v1744992114/SkillSort/resumes/resume%20%281%29" download="resume.pdf"
+
+                                    // href={`${import.meta.env.VITE_BACKEND_URL}/api/user/download-resume/${user.resume}`}
+                                    // target="_blank"
+                                    // className="mt-3"
+                                    // rel="noopener noreferrer"
+                                >
+                                    <Button variant="outline" className="w-full">
+                                        Download Resume
+                                    </Button>
+                                </a>
                             )}
+
+
                         </CardHeader>
 
                         <CardContent>
-                            <Separator className="my-4" />
+                            <Separator className="mb-4" />
                             <div className="space-y-4">
                                 <div className="flex items-center">
                                     <Clock className="h-5 w-5 mr-2 text-gray-500" />
@@ -88,9 +105,10 @@ const Settings = () => {
                                 </div>
                             </div>
 
-                            <div className="mt-6">
-                                <DeleteAccount />
+                            <Button className="bg-red-600 hover:bg-red-700 w-full mt-5 text-white hover:text-white" onClick={logoutHandler}>Logout</Button>
 
+                            <div className="mt-4">
+                                <DeleteAccount />
                             </div>
                         </CardContent>
                     </Card>

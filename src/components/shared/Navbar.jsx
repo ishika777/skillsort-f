@@ -8,17 +8,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 const Navbar = () => {
 
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const { user } = useSelector(state => state.user);
 
-
-    const logoutHandler = async () => {
-        const res = await logout(dispatch);
-        if(res){
-            navigate("/login")
-        }
-    }
 
 
   return (
@@ -27,7 +19,7 @@ const Navbar = () => {
             <span className="text-red-500">Skill</span>Sort
             </div>
 
-            <DropdownMenu>
+            {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <div className="flex items-center space-x-3 cursor-pointer bg-gray-200 px-3 py-1 rounded-lg">
                         <Avatar className="w-10 h-10">
@@ -41,7 +33,7 @@ const Navbar = () => {
                     <DropdownMenuItem onClick={() => console.log("Profile Clicked")}>Profile</DropdownMenuItem>
                     <DropdownMenuItem className="bg-red-200" onClick={logoutHandler}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
 
         </nav>
   )

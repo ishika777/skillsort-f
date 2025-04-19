@@ -2,7 +2,7 @@ import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerT
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Edit, Github, Link, Linkedin, Loader2, Twitter } from "lucide-react";
+import { Edit, Github, Link, Linkedin, Loader2, Plus, Twitter } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,9 @@ import { toast } from "sonner";
 const PersonalDetails = () => {
     const { user, loading } = useSelector((state) => state.user)
     const dispatch = useDispatch();
+    const [profileImage, setProfileImage] = useState(user.profilePicture);
+    const [backendImage, setBackendImage] = useState(null);
+    const [resume, setResume] = useState(null);
     const [input, setInput] = useState({
         fullname: user.fullname,
         contact: user.contact,
@@ -21,9 +24,16 @@ const PersonalDetails = () => {
             twitter: user.url.twitter,
             portfolio: user.url.portfolio
         },
-        // resume: null
     })
 
+    const inittials = user.fullname.split(" ").map(part => part[0]).join("").toUpperCase();
+
+    const imageHandler = (e) => {
+        const file = e.target.files[0];
+        setBackendImage(file)
+        const imageURL = URL.createObjectURL(file);
+        setProfileImage(imageURL);
+    }
     const changeHandler = (e) => {
         setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     }
@@ -38,8 +48,9 @@ const PersonalDetails = () => {
         }));
     }
 
+
+
     const submitHandler = async () => {
-        console.log(input)
         if (!input.fullname) {
             toast.error("Enter valid name!")
             return;
@@ -58,7 +69,20 @@ const PersonalDetails = () => {
         }
 
         try {
-            await updatePersonalDetails(dispatch, input);
+            const formData = new FormData();
+            formData.append("fullname", input.fullname);
+            formData.append("contact", input.contact);
+            formData.append("linkedIn", input.url.linkedIn);
+            formData.append("gitHub", input.url.gitHub);
+            formData.append("twitter", input.url.twitter);
+            formData.append("portfolio", input.url.portfolio);
+            if (profileImage) {
+                formData.append("profilePicture", backendImage);
+            }
+            if (resume) {
+                formData.append("resume", resume);
+            }
+            await updatePersonalDetails(dispatch, formData);
         } catch (error) {
             console.log(error)
         }
@@ -82,51 +106,63 @@ const PersonalDetails = () => {
                 </DrawerHeader>
 
                 <div className="p-4 space-y-6">
-                    <div className="flex flex-col items-center space-y-3 bg-amber-200">
-                        <Avatar className="w-20 h-20">
-                            <AvatarImage src="/path-to-profile.jpg" alt="Profile Picture" />
-                            <AvatarFallback>U</AvatarFallback>
-                        </Avatar>
-                        <Input type="file" accept="image/*" className="w-full" />
+
+                    <div className="flex items-center justify-between">
+                        <div className="flex flex-col items-center ">
+                            <Label htmlFor="image" className="relative cursor-pointer">
+                                <div className="absolute z-10 opacity-0 hover:opacity-20 transition w-28 h-28 rounded-full flex items-center justify-center">
+                                    <Plus className=" text-black h-15 w-15" />
+                                </div>
+                                <Avatar className="w-28 h-28">
+                                    <AvatarImage src={profileImage} alt="Profile Picture" />
+                                    <AvatarFallback>{inittials}</AvatarFallback>
+                                </Avatar>
+                            </Label>
+                            <Input
+                                id="image"
+                                type="file"
+                                accept="image/*"
+                                className="w-full hidden"
+                                onChange={imageHandler}
+                            />
+
+                        </div>
+
+                        <div className="flex flex-col gap-4">
+                            <Input
+                                name="fullname"
+                                value={input.fullname}
+                                placeholder="Enter New Name"
+                                className="flex-1"
+                                onChange={changeHandler}
+                            />
+                            <Input
+                                name="contact"
+                                value={input.contact}
+                                type="number"
+                                placeholder="Enter New Contact"
+                                className="flex-1"
+                                onChange={changeHandler}
+                            />
+                        </div>
                     </div>
 
-                    {/* Name and Contact in a row */}
-                    <div className="flex gap-4">
-                        <Input
-                            name="fullname"
-                            value={input.fullname}
-                            placeholder="Enter New Name"
-                            className="flex-1"
-                            onChange={changeHandler}
-                        />
-                        <Input
-                            name="contact"
-                            value={input.contact}
-                            type="number"
-                            placeholder="Enter New Contact"
-                            className="flex-1"
-                            onChange={changeHandler}
-                        />
-                    </div>
-
-                    {/* Resume Upload */}
-                    <div className="bg-amber-200">
+                    <div className="">
 
                         <Label className="mb-2">Resume</Label>
-                        {/* <div className="flex">
-                        <Input 
-                        name="resume"
-                        type="file" 
-                        accept=".pdf,.doc,.docx" 
-                        className="w-full"                              
-                        onChange={changeHandler}
-                        />
-                    </div>  */}
+                        <div className="flex">
+                            <Input
+                                name="resume"
+                                type="file"
+                                accept=".pdf"
+                                className="w-full"
+                                onChange={(e) => setResume(e.target.files[0])}
+                            />
+                        </div>
                     </div>
 
-                    {/* Social Links */}
                     <div>
-                        <div className="flex flex-col w-full">
+                        <div className="flex flex-col w-full mb-2">
                             <div className="relative">
                                 <Input
                                     type="text"
@@ -140,7 +176,7 @@ const PersonalDetails = () => {
                                 <Linkedin className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
-                        <div className="flex flex-col w-full">
+                        <div className="flex flex-col w-full mb-2">
                             <div className="relative">
                                 <Input
                                     type="text"
@@ -154,7 +190,7 @@ const PersonalDetails = () => {
                                 <Github className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
-                        <div className="flex flex-col w-full">
+                        <div className="flex flex-col w-full mb-2">
                             <div className="relative">
                                 <Input
                                     type="text"
@@ -167,7 +203,7 @@ const PersonalDetails = () => {
                                 <Twitter className="absolute left-3 top-2.5 h-5 w-5" />
                             </div>
                         </div>
-                        <div className="flex flex-col w-full">
+                        <div className="flex flex-col w-full mb-2">
                             <div className="relative">
                                 <Input
                                     type="text"

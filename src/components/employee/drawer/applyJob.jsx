@@ -27,7 +27,7 @@ const ApplyJob = () => {
         <Drawer direction="right">
             <DrawerTrigger asChild>
                 <Button
-                    className="mt-4 px-4 py-5 text-md bg-blue-600 text-white rounded-md hover:bg-blue-700 hover:text-white transition"
+                    className="px-4 py-5 text-md bg-blue-600 text-white rounded-md hover:bg-blue-700 hover:text-white transition"
                     variant="ghost"
                     size="sm"
                     onClick={(e) => e.currentTarget.blur()}

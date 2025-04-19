@@ -221,16 +221,16 @@ export const resetPassword = async (dispatch, resetToken, newPassword) => {
     }
     return false;
 }
-export const updatePersonalDetails = async (dispatch, input) => {
+export const updatePersonalDetails = async (dispatch, formData) => {
     try {
         dispatch(setLoading(true))
 
         const response = await axios.put(
             `${USER_API_END_POINT}/profile/update/personal`,
-            input,
+            formData,
             {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                 },
             }
         );

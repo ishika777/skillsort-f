@@ -9,7 +9,7 @@ export default function DashHome() {
     const activeJobs = jobsByRecruiter?.filter((job) => job.deadline.split("T")[0] > new Date().toISOString().split("T")[0]).length || 0;
     const expiredJobs = jobsByRecruiter?.length - activeJobs.length || 0;
     return (
-        <div className="tabs-scroll p-6 space-y-6 overflow-y-auto w-full h-[calc(100vh-64px)]">
+        <div className="tabs-scroll p-6 space-y-6 overflow-y-auto w-full h-[calc(100vh-64px)] pt-4">
 
             <div className="grid grid-cols-2 gap-6">
                 <DashboardCard icon={<FileText size={28} />} title="Active Job Listings" active={true} value={activeJobs} />

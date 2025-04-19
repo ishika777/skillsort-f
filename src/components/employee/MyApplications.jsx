@@ -33,9 +33,7 @@ const MyApplications = () => {
   }, []);
 
   return (
-    <div className="tabs-scroll w-full p-6 overflow-y-auto h-[calc(100vh-64px)]">
-      <h2 className="text-2xl font-semibold mb-4">My Applications</h2>
-
+    <div className="tabs-scroll w-full p-6 overflow-y-auto h-[calc(100vh-64px)] pt-4">
       {applications.length === 0 ? (
         <p>No applications yet. Start applying!</p>
       ) : (

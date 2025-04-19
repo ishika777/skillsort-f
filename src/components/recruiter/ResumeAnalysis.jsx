@@ -36,7 +36,7 @@ const ResumeAnalysis = () => {
   };
 
   return (
-    <div className="tabs-scroll w-full p-6 h-[calc(100vh-64px)] overflow-y-auto">
+    <div className="tabs-scroll w-full p-6 h-[calc(100vh-64px)] pt-4 overflow-y-auto">
       <h2 className="text-2xl font-semibold mb-4">📂 Resume Analysis</h2>
 
       {/* Upload Resumes */}

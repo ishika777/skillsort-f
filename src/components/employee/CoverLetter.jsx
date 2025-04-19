@@ -53,7 +53,7 @@ const CoverLetter = () => {
   };
 
   return (
-    <div className="tabs-scroll w-full p-6 overflow-y-auto h-[calc(100vh-64px)]">
+    <div className="tabs-scroll w-full p-6 overflow-y-auto h-[calc(100vh-64px)] pt-4">
       <h2 className="text-2xl font-semibold mb-4">Cover Letter Generator</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">

@@ -7,7 +7,7 @@ axios.defaults.withCredentials = true;
 const USER_API_END_POINT = import.meta.env.VITE_BACKEND_URL + "/api/job"
 
 
-export const saveJob = async (id) => {
+export const saveJob = async (dispatch, id) => {
     try {
         const response = await axios.post(
             `${USER_API_END_POINT}/save`,
@@ -29,7 +29,7 @@ export const saveJob = async (id) => {
     } 
     return false;
 }
-export const unsaveJob = async (id) => {
+export const unsaveJob = async (dispatch, id) => {
     try {
         const response = await axios.post(
             `${USER_API_END_POINT}/unsave`,

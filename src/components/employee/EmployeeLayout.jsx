@@ -13,7 +13,8 @@ import SettingsDetails from "../shared/Settings";
 
 const EmployeeLayout = () => {
     const [selectedJob, setSelectedJob] = useState(null);
-    const [tabValue, setTabValue] = useState("dashboard");
+    const [tabValue, setTabValue] = useState("jobs");
+    const [previousTab, setPreviousTab] = useState("jobs");
     return (
         <div className="h-full w-full">
             <Tabs value={tabValue} onValueChange={setTabValue} className="flex flex-row bg-gray-900 gap-0 h-full w-full">
@@ -46,13 +47,13 @@ const EmployeeLayout = () => {
                 
                 <div className="flex flex-1 bg-white">
                     <TabsContent value="dashboard"><EmployeeDashHome /></TabsContent>
-                    <TabsContent value="jobs"><JobListings setSelectedJob={setSelectedJob} setTabValue={setTabValue} /></TabsContent>
+                    <TabsContent value="jobs"><JobListings setSelectedJob={setSelectedJob} setTabValue={setTabValue} setPreviousTab={setPreviousTab} /></TabsContent>
                     <TabsContent value="applications"><MyApplications /></TabsContent>
-                    <TabsContent value="saved"><SavedJobs /></TabsContent>
+                    <TabsContent value="saved"><SavedJobs setSelectedJob={setSelectedJob} setTabValue={setTabValue} setPreviousTab={setPreviousTab} /></TabsContent>
                     <TabsContent value="resume"><ResumeBuilder /></TabsContent>
                     <TabsContent value="settings"><SettingsDetails /></TabsContent>
                     <TabsContent value="coverletter"><CoverLetter /></TabsContent>
-                    <TabsContent value="jobdetails"><JobDetails job={selectedJob} setTabValue={setTabValue} /></TabsContent>
+                    <TabsContent value="jobdetails"><JobDetails job={selectedJob} setTabValue={setTabValue} previousTab={previousTab} /></TabsContent>
                 </div>
             </Tabs>
         </div>

@@ -16,6 +16,7 @@ import SignupTabs from "./pages/auth/SignupTabs"
 import VerifyEmailManually from "./pages/auth/advance auth/VerifyEmailManually"
 import { getAllJobs, getAllPostedJobs } from "./actions/job-actions"
 import { getSavedJobs } from "./actions/saveJob-action"
+import { getAllAppliedJobs } from "./actions/application-action"
 
 const ProtectedRoutes = ({ children }) => {
     const { isAuthenticated, user } = useSelector(state => state.user);
@@ -124,8 +125,8 @@ function App() {
             // 
             //  job deatils me posted by aur hr ki profile bnani h, also vo public private kr skta h
             // 
-            // 
-            // 
+            // company name in appliactions and jobs
+            //
             // //////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////
             ///////////////////////////////////////////////////////////////////////////////
@@ -148,6 +149,7 @@ function App() {
             if(user.role === "Employee"){
                 getAllJobs(dispatch)
                getSavedJobs(dispatch)
+               getAllAppliedJobs(dispatch)
             }
         }
     }, [dispatch, user])

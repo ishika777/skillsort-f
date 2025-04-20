@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Globe, Clock, GithubIcon, LinkedinIcon, Twitter } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import SettingsTabs from "./SettingsTabs";
-import { downloadResume, logout } from "@/actions/user-actions";
+import { logout } from "@/actions/user-actions";
 import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
@@ -25,13 +25,22 @@ const Settings = () => {
 
     const logoutHandler = async () => {
         const res = await logout(dispatch);
-        if(res){
+        if (res) {
             navigate("/login")
         }
     }
 
-    const handleClick = async() => {
-        await downloadResume();
+    const handleClick = async () => {
+        const pdfUrl = user?.resume?.url;
+        const downloadUrl = pdfUrl.replace("/upload/", "/upload/fl_attachment/");
+        try {
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = "MyResume.pdf";
+            link.click();
+        } catch (error) {
+            toast.error(error);
+        }
     }
 
     const inittials = user?.fullname?.split(" ").map(part => part[0]).join("").toUpperCase();
@@ -85,11 +94,11 @@ const Settings = () => {
                                 )}
                             </div>
 
-                            {user?.resume && (
-                                    <Button variant="outline" className="w-full mt-4 text-red-500 border-2 border-red-500 hover:bg-white hover:text-red-500" onClick={handleClick}>
-                                        Download Resume
-                                    </Button>
-                            
+                            {user?.resume?.url && (
+                                <Button variant="outline" className="w-full mt-4 text-red-500 border-2 border-red-500 hover:bg-white hover:text-red-500" onClick={handleClick}>
+                                    Download Resume
+                                </Button>
+
                             )}
 
 

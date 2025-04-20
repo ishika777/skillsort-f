@@ -4,7 +4,7 @@ import { Home, Briefcase, FileText, Bookmark, FilePlus, Settings } from "lucide-
 
 import EmployeeDashHome from "./EmployeeDashHome";
 import JobListings from "./JobListings";
-import MyApplications from "./MyApplications";
+import ApplicationsPage from "./ApplicationsPage";
 import SavedJobs from "./SavedJobs";
 import ResumeBuilder from "./ResumeBuilder";
 import CoverLetter from "./CoverLetter";
@@ -48,7 +48,7 @@ const EmployeeLayout = () => {
                 <div className="flex flex-1 bg-white">
                     <TabsContent value="dashboard"><EmployeeDashHome /></TabsContent>
                     <TabsContent value="jobs"><JobListings setSelectedJob={setSelectedJob} setTabValue={setTabValue} setPreviousTab={setPreviousTab} /></TabsContent>
-                    <TabsContent value="applications"><MyApplications /></TabsContent>
+                    <TabsContent value="applications"><ApplicationsPage setSelectedJob={setSelectedJob} setTabValue={setTabValue} setPreviousTab={setPreviousTab} /></TabsContent>
                     <TabsContent value="saved"><SavedJobs setSelectedJob={setSelectedJob} setTabValue={setTabValue} setPreviousTab={setPreviousTab} /></TabsContent>
                     <TabsContent value="resume"><ResumeBuilder /></TabsContent>
                     <TabsContent value="settings"><SettingsDetails /></TabsContent>

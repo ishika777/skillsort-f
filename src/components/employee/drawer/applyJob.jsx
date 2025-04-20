@@ -2,25 +2,46 @@ import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTrigger, Drawe
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, Send } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { useState } from "react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { applyForJob } from "@/actions/application-action";
 
-const ApplyJob = () => {
+const ApplyJob = ({ job }) => {
     const dispatch = useDispatch();
-    const { user, loading } = useSelector((state) => state.user);
+    const { user } = useSelector((state) => state.user);
+    const { loading } = useSelector((state) => state.application);
 
-    const [resumeOption, setResumeOption] = useState(user?.resume ? "profile" : "upload");
+    const [resumeOption, setResumeOption] = useState(user?.resume?.url ? "profile" : "upload");
     const [newResume, setNewResume] = useState(null);
     const [cv, setCV] = useState(null);
 
     const submitApplication = async () => {
-        // if (!user.resume && !newResume) {
-        //     toast.error("Please upload your resume.");
-        //     return;
-        // }
-        console.log("hiii")
+        console.log(job)
+        if (!user.resume?.url && !newResume) {
+            toast.error("Please upload your resume.");
+            return;
+        }
+        try {
+            const formData = new FormData();
+            if (cv) {
+                formData.append("cv", cv);
+            }
+            if (resumeOption === "profile") {
+                formData.append("resumeUrl", user?.resume?.url);
+                formData.append("resumePublicId", user?.resume?.publicId);
+            } else if (resumeOption === "upload") {
+                formData.append("resume", newResume);
+            }
+            formData.append("jobId", job._id);
+            formData.append("resumeOption", resumeOption);
+            await applyForJob(dispatch, formData)
+
+        } catch (error) {
+
+        }
     };
 
     return (
@@ -47,51 +68,39 @@ const ApplyJob = () => {
                 </DrawerHeader>
 
                 <div className="p-4 space-y-6 max-h-[75vh] overflow-y-auto">
-                    {/* Resume Section */}
                     <div className="space-y-3">
                         <Label className="font-medium">
                             Resume <span className="text-red-500">*</span>
                         </Label>
 
-                        {user?.resume ? (
+                        {user?.resume?.url ? (
                             <>
-                                <div className="space-y-2">
-                                    <div className="flex items-center gap-2">
-                                        <input
-                                            type="radio"
-                                            id="useProfileResume"
-                                            name="resumeOption"
-                                            checked={resumeOption === "profile"}
-                                            onChange={() => setResumeOption("profile")}
-                                        />
-                                        <Label
-                                            htmlFor="useProfileResume"
-                                            className="text-sm cursor-pointer"
-                                        >
-                                            Use resume from profile
-                                        </Label>
-                                    </div>
+                                <div className="space-y-3">
+                                    <RadioGroup
+                                        defaultValue={resumeOption}
+                                        value={resumeOption}
+                                        onValueChange={(value) => setResumeOption(value)}
+                                        className="space-y-2"
+                                    >
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="profile" id="profile" />
+                                            <Label htmlFor="profile" className="text-sm cursor-pointer">
+                                                Use resume from profile
+                                            </Label>
+                                        </div>
 
-                                    <div className="flex items-center gap-2">
-                                        <input
-                                            type="radio"
-                                            id="uploadNewResume"
-                                            name="resumeOption"
-                                            checked={resumeOption === "upload"}
-                                            onChange={() => setResumeOption("upload")}
-                                        />
-                                        <Label
-                                            htmlFor="uploadNewResume"
-                                            className="text-sm cursor-pointer"
-                                        >
-                                            Upload new resume
-                                        </Label>
-                                    </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="upload" id="upload" />
+                                            <Label htmlFor="upload" className="text-sm cursor-pointer">
+                                                Upload new resume
+                                            </Label>
+                                        </div>
+                                    </RadioGroup>
 
                                     {resumeOption === "upload" && (
                                         <Input
                                             type="file"
-                                            accept=".pdf,.doc,.docx"
+                                            accept=".pdf"
                                             onChange={(e) => setNewResume(e.target.files[0])}
                                         />
                                     )}
@@ -104,7 +113,7 @@ const ApplyJob = () => {
                                 </p>
                                 <Input
                                     type="file"
-                                    accept=".pdf,.doc,.docx"
+                                    accept=".pdf"
                                     required
                                     onChange={(e) => setNewResume(e.target.files[0])}
                                 />
@@ -112,7 +121,6 @@ const ApplyJob = () => {
                         )}
                     </div>
 
-                    {/* CV Section */}
                     <div className="space-y-3">
                         <Label className="font-medium">CV (Optional)</Label>
                         <Input
@@ -132,7 +140,7 @@ const ApplyJob = () => {
                         {loading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Submitting...
+                                Submitting Application...
                             </>
                         ) : (
                             "Apply Now"

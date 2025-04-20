@@ -247,26 +247,6 @@ export const updatePersonalDetails = async (dispatch, formData) => {
     return false;
 }
 
-export const downloadResume = async () => {
-    try {
-        const response = await axios.get(`${USER_API_END_POINT}/resume/download`)
-        const pdfUrl = response.data
-        const link = document.createElement('a');
-        link.href = pdfUrl;
-        link.download = "resume.pdf";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-
-    } catch (error) {
-        toast.error(error.message);
-    }
-};
-
-
-
-
 
 
 export const updateEducationalDetails = async (dispatch, input) => {

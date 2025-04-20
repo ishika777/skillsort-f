@@ -7,10 +7,13 @@ import { Separator } from "@/components/ui/separator";
 import { Globe, Clock, GithubIcon, LinkedinIcon, Twitter } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import SettingsTabs from "./SettingsTabs";
+import { downloadResume, logout } from "@/actions/user-actions";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
     const { user } = useSelector((state) => state.user)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString("en-US", {
@@ -27,7 +30,11 @@ const Settings = () => {
         }
     }
 
-    const inittials = user.fullname.split(" ").map(part => part[0]).join("").toUpperCase();
+    const handleClick = async() => {
+        await downloadResume();
+    }
+
+    const inittials = user?.fullname?.split(" ").map(part => part[0]).join("").toUpperCase();
 
     return (
         <div className="tabs-scroll p-6 space-y-6 overflow-y-auto w-full h-[calc(100vh-64px)]">
@@ -43,54 +50,46 @@ const Settings = () => {
                                     </AvatarFallback>
                                 </Avatar>
                             </div>
-                            <CardTitle className="text-xl font-bold">{user.fullname}</CardTitle>
+                            <CardTitle className="text-xl font-bold">{user?.fullname}</CardTitle>
                             <Badge variant="outline" className="mt-1 border-red-500 text-red-500">
-                                {user.role}
+                                {user?.role}
                             </Badge>
                             <div className="flex space-x-2 mt-3">
-                                {user.url.linkedIn && (
+                                {user?.url?.linkedIn && (
                                     <Button variant="outline" size="icon" asChild className="rounded-full h-8 w-8">
-                                        <a href={user.url.linkedIn} target="_blank" rel="noopener noreferrer">
+                                        <a href={user?.url?.linkedIn} target="_blank" rel="noopener noreferrer">
                                             <LinkedinIcon />
                                         </a>
                                     </Button>
                                 )}
-                                {user.url.gitHub && (
+                                {user?.url?.gitHub && (
                                     <Button variant="outline" size="icon" asChild className="rounded-full h-8 w-8">
-                                        <a href={user.url.gitHub} target="_blank" rel="noopener noreferrer">
+                                        <a href={user?.url.gitHub} target="_blank" rel="noopener noreferrer">
                                             <GithubIcon />
                                         </a>
                                     </Button>
                                 )}
-                                {user.url.twitter && (
+                                {user?.url?.twitter && (
                                     <Button variant="outline" size="icon" asChild className="rounded-full h-8 w-8">
-                                        <a href={user.url.twitter} target="_blank" rel="noopener noreferrer">
+                                        <a href={user?.url?.twitter} target="_blank" rel="noopener noreferrer">
                                             <Twitter />
                                         </a>
                                     </Button>
                                 )}
-                                {user.url.portfolio && (
+                                {user?.url?.portfolio && (
                                     <Button variant="outline" size="icon" asChild className="rounded-full h-8 w-8">
-                                        <a href={user.url.portfolio} target="_blank" rel="noopener noreferrer">
+                                        <a href={user?.url?.portfolio} target="_blank" rel="noopener noreferrer">
                                             <Globe className="h-4 w-4" />
                                         </a>
                                     </Button>
                                 )}
                             </div>
 
-                            {user.resume && (
-                                <a
-                                href="https://res.cloudinary.com/ishika05/raw/upload/v1744992114/SkillSort/resumes/resume%20%281%29" download="resume.pdf"
-
-                                    // href={`${import.meta.env.VITE_BACKEND_URL}/api/user/download-resume/${user.resume}`}
-                                    // target="_blank"
-                                    // className="mt-3"
-                                    // rel="noopener noreferrer"
-                                >
-                                    <Button variant="outline" className="w-full">
+                            {user?.resume && (
+                                    <Button variant="outline" className="w-full mt-4 text-red-500 border-2 border-red-500 hover:bg-white hover:text-red-500" onClick={handleClick}>
                                         Download Resume
                                     </Button>
-                                </a>
+                            
                             )}
 
 
@@ -101,7 +100,7 @@ const Settings = () => {
                             <div className="space-y-4">
                                 <div className="flex items-center">
                                     <Clock className="h-5 w-5 mr-2 text-gray-500" />
-                                    <span className="text-sm">Member since {formatDate(user.createdAt)}</span>
+                                    <span className="text-sm">Member since {formatDate(user?.createdAt)}</span>
                                 </div>
                             </div>
 

@@ -12,21 +12,21 @@ import { toast } from "sonner";
 const PersonalDetails = () => {
     const { user, loading } = useSelector((state) => state.user)
     const dispatch = useDispatch();
-    const [profileImage, setProfileImage] = useState(user.profilePicture);
+    const [profileImage, setProfileImage] = useState(user?.profilePicture);
     const [backendImage, setBackendImage] = useState(null);
     const [resume, setResume] = useState(null);
     const [input, setInput] = useState({
-        fullname: user.fullname,
-        contact: user.contact,
+        fullname: user?.fullname,
+        contact: user?.contact,
         url: {
-            linkedIn: user.url.linkedIn,
-            gitHub: user.url.gitHub,
-            twitter: user.url.twitter,
-            portfolio: user.url.portfolio
+            linkedIn: user?.url.linkedIn,
+            gitHub: user?.url.gitHub,
+            twitter: user?.url.twitter,
+            portfolio: user?.url.portfolio
         },
     })
 
-    const inittials = user.fullname.split(" ").map(part => part[0]).join("").toUpperCase();
+    const inittials = user?.fullname.split(" ").map(part => part[0]).join("").toUpperCase();
 
     const imageHandler = (e) => {
         const file = e.target.files[0];

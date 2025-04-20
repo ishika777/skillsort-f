@@ -17,9 +17,9 @@ const ExperienceTab = () => {
                 <CompanyDetails />
             </CardHeader>
             <CardContent>
-                {user.experience && user.experience.length > 0 ? (
+                {user?.experience && user?.experience.length > 0 ? (
                     <div className="space-y-6">
-                        {user.experience.map((exp) => (
+                        {user?.experience.map((exp) => (
                             <div key={exp._id} className="flex-1">
                                 <div className="flex items-start">
                                     <Briefcase className="h-5 w-5 mr-2 text-red-500 mt-1" />

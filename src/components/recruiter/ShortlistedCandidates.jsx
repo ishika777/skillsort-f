@@ -42,7 +42,7 @@ const ShortlistedCandidates = () => {
           <SelectValue placeholder="Select a Job Posting" />
         </SelectTrigger>
         <SelectContent>
-          {jobs.map((job) => (
+          {jobs?.map((job) => (
             <SelectItem key={job.id} value={job.id}>
               {job.title}
             </SelectItem>

@@ -16,9 +16,9 @@ const EducationTab = () => {
                 <EducationDetails />
             </CardHeader>
             <CardContent>
-                {user.education && user.education.length > 0 ? (
+                {user?.education && user?.education.length > 0 ? (
                     <div className="space-y-6">
-                        {user.education.map((edu) => (
+                        {user?.education.map((edu) => (
                             <div key={edu._id} className="flex border-l-4 border-red-500 pl-4 py-1">
                                 <div className="flex-1">
                                     <div className="flex items-start">

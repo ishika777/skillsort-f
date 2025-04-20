@@ -11,7 +11,7 @@ const ApplyJob = () => {
     const dispatch = useDispatch();
     const { user, loading } = useSelector((state) => state.user);
 
-    const [resumeOption, setResumeOption] = useState(user.resume ? "profile" : "upload");
+    const [resumeOption, setResumeOption] = useState(user?.resume ? "profile" : "upload");
     const [newResume, setNewResume] = useState(null);
     const [cv, setCV] = useState(null);
 
@@ -53,7 +53,7 @@ const ApplyJob = () => {
                             Resume <span className="text-red-500">*</span>
                         </Label>
 
-                        {user.resume ? (
+                        {user?.resume ? (
                             <>
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2">

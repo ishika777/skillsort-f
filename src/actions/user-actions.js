@@ -23,13 +23,13 @@ export const signup = async (dispatch, input) => {
             toast.success(response.data.message);
             dispatch(setUser(response.data.user))
             dispatch(setIsAuthenticated(true))
-           
+
             return true;
         }
     } catch (error) {
         console.log(error);
         toast.error(error.response?.data.message || error.message);
-    } finally{
+    } finally {
         dispatch(setLoading(false))
     }
     return false;
@@ -52,7 +52,7 @@ export const login = async (dispatch, input) => {
             toast.success(response.data.message);
             dispatch(setUser(response.data.user))
             dispatch(setIsAuthenticated(true))
-    
+
             return true;
         }
     } catch (error) {
@@ -60,7 +60,7 @@ export const login = async (dispatch, input) => {
         console.log(error.response?.data.message);
 
         toast.error(error.response?.data.message || error.message);
-    } finally{  
+    } finally {
         dispatch(setLoading(false))
     }
     return false;
@@ -86,7 +86,7 @@ export const sendCode = async (dispatch, email) => {
     } catch (error) {
         console.log(error);
         toast.error(error.response?.data.message || error.message);
-    } finally{
+    } finally {
         dispatch(setLoading(false))
     }
     return false;
@@ -110,13 +110,13 @@ export const verifyEmail = async (dispatch, verificationCode) => {
 
             dispatch(setUser(response.data.user))
             dispatch(setIsAuthenticated(true))
-        
+
             return true;
         }
     } catch (error) {
         console.log(error);
         toast.error(error.response?.data.message || error.message);
-    } finally{
+    } finally {
         dispatch(setLoading(false))
     }
     return false;
@@ -133,12 +133,11 @@ export const checkAuthentication = async (dispatch) => {
         if (response.data.success) {
             dispatch(setUser(response.data.user))
             dispatch(setIsAuthenticated(true))
-       
+
             return true;
         }
     } catch (error) {
-        console.log(error);
-    } finally{
+    } finally {
         dispatch(setIsCheckingAuth(false))
     }
     return false;
@@ -164,7 +163,7 @@ export const logout = async (dispatch) => {
     } catch (error) {
         console.log(error);
         toast.error(error.response?.data.message || error.message);
-    } finally{
+    } finally {
         dispatch(setLoading(false))
     }
     return false;
@@ -174,7 +173,7 @@ export const forgotPassword = async (dispatch, email) => {
     try {
         dispatch(setLoading(true))
 
-        const response = await axios.post(`${USER_API_END_POINT}/forgot-password`,{ email },{
+        const response = await axios.post(`${USER_API_END_POINT}/forgot-password`, { email }, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -188,7 +187,7 @@ export const forgotPassword = async (dispatch, email) => {
     } catch (error) {
         console.log(error);
         toast.error(error.response?.data.message || error.message);
-    } finally{
+    } finally {
         dispatch(setLoading(false))
     }
     return false;
@@ -216,11 +215,12 @@ export const resetPassword = async (dispatch, resetToken, newPassword) => {
     } catch (error) {
         console.log(error);
         toast.error(error.response?.data.message || error.message);
-    } finally{
+    } finally {
         dispatch(setLoading(false))
     }
     return false;
 }
+
 export const updatePersonalDetails = async (dispatch, formData) => {
     try {
         dispatch(setLoading(true))
@@ -241,11 +241,33 @@ export const updatePersonalDetails = async (dispatch, formData) => {
     } catch (error) {
         console.log(error);
         toast.error(error.response?.data.message || error.message);
-    } finally{
+    } finally {
         dispatch(setLoading(false))
     }
     return false;
 }
+
+export const downloadResume = async () => {
+    try {
+        const response = await axios.get(`${USER_API_END_POINT}/resume/download`)
+        const pdfUrl = response.data
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.download = "resume.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+
+    } catch (error) {
+        toast.error(error.message);
+    }
+};
+
+
+
+
+
 
 export const updateEducationalDetails = async (dispatch, input) => {
     try {
@@ -267,7 +289,7 @@ export const updateEducationalDetails = async (dispatch, input) => {
     } catch (error) {
         console.log(error);
         toast.error(error.response?.data.message || error.message);
-    } finally{
+    } finally {
         dispatch(setLoading(false))
     }
     return false;
@@ -293,7 +315,7 @@ export const updateExperienceDetails = async (dispatch, input) => {
     } catch (error) {
         console.log(error);
         toast.error(error.response?.data.message || error.message);
-    } finally{
+    } finally {
         dispatch(setLoading(false))
     }
     return false;

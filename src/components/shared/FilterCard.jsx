@@ -1,169 +1,158 @@
 import { useState } from 'react';
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '../ui/card';
-import { Badge } from '../ui/badge';
+import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 import { Slider } from '../ui/slider';
 import { Input } from '../ui/input';
-import { XCircle } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Checkbox } from '../ui/checkbox';
+import { Label } from '../ui/label';
 
 export default function JobFilterCard() {
     const [filters, setFilters] = useState({
-        jobType: "",
-        experience: "",
-        qualification: "",
-        location: "",
-        skills: "",
+        jobType: [],
+        experience: [],
+        qualification: [],
+        location: [],
+        skills: '',
         salary: [0, 200],
     });
 
-    const jobTypes = ["Full-time", "Part-time"];
-    const experiences = ["0-1", "1-3", "3-5", "5+"];
-    const qualifications = ["High School", "Bachelor's", "Master's", "PhD"];
-    const locations = ["On-Site", "Remote", "Hybrid"];
+    const jobType = ["Full-time", "Part-time"];
+    const experience = ["0-1", "1-3", "3-5", "5+"];
+    const qualification = ["High School", "Bachelor's", "Master's", "PhD"];
+    const location = ["On-Site", "Remote", "Hybrid"];
 
     const handleResetFilters = () => {
         setFilters({
-            jobType: "",
-            experience: "",
-            qualification: "",
-            location: "",
-            skills: "",
+            jobType: [],
+            experience: [],
+            qualification: [],
+            location: [],
+            skills: '',
             salary: [0, 200],
         });
     };
 
-    const handleFilterChange = (key, value) => {
-        setFilters(prev => ({
-            ...prev,
-            [key]: value
-        }));
+    const handleCheckboxChange = (key, value) => {
+        setFilters((prev) => {
+            const isSelected = prev[key].includes(value);
+            const updatedValues = isSelected
+                ? prev[key].filter((item) => item !== value)
+                : [...prev[key], value];
+            return {
+                ...prev,
+                [key]: updatedValues,
+            };
+        });
     };
 
+    const applyFilter = () => {
+        filters.skills = filters.skills.split(',').map((skill) => skill.trim())
+        console.log(filters)
+    }
+
     const formatSalary = (value) => {
-        return value === 0 ? "$0k" :
-            value === 200 ? "$200k+" :
-                `$${value}k`;
+        return value === 0 ? "10k" :
+            value === 200 ? "200k+" :
+                `${value}k`;
     };
 
     return (
         <Card className="w-full h-full max-w-md shadow-md p-2">
-            <CardHeader className="flex flex-row items-end justify-between">
+            <CardHeader className="flex flex-row items-end justify-end">
                 <Button
                     variant="link"
                     size="sm"
                     onClick={handleResetFilters}
-                    className="text-black w-full justify-end"
+                    className="text-black"
                 >
-                    <span>Reset</span>
+                    Reset
                 </Button>
             </CardHeader>
+
             <CardContent className="tabs-scroll py-2 w-full flex flex-col gap-4 overflow-auto">
                 {/* Job Type */}
                 <div className="flex flex-col gap-2 w-full">
-                    <label className="text-sm font-medium">Job Type</label>
-                    <div className="flex flex-wrap gap-2">
-                        <Checkbox
-                            checked={filters.jobType.includes("any")}
-                            onChange={() => handleFilterChange('jobType', 'any')}
-                            label="Any"
-                            className="mr-2"
-                        />
-                        {jobTypes.map((type) => (
-                            <Checkbox
-                                key={type}
-                                checked={filters.jobType.includes(type)}
-                                onChange={() => handleFilterChange('jobType', type)}
-                                label={type}
-                                className="mr-2"
-                            />
+                    <Label className="text-sm font-medium">Job Type</Label>
+                    <div className="flex flex-col items-start gap-2 ml-3">
+                        {jobType.map((type) => (
+                            <div className='flex items-center cursor-pointer' key={type}>
+                                <Checkbox
+                                    id={type}
+                                    checked={filters.jobType.includes(type)}
+                                    onCheckedChange={() => handleCheckboxChange('jobType', type)}
+                                    className="mr-2"
+                                />
+                                <Label htmlFor={type}>{type}</Label>
+                            </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Experience */}
                 <div className="flex flex-col gap-2 w-full">
-                    <label className="text-sm font-medium">Experience (years)</label>
-                    <div className="flex flex-wrap gap-2">
-                        <Checkbox
-                            checked={filters.experience.includes("any")}
-                            onChange={() => handleFilterChange('experience', 'any')}
-                            label="Any"
-                            className="mr-2"
-                        />
-                        {experiences.map((exp) => (
-                            <Checkbox
-                                key={exp}
-                                checked={filters.experience.includes(exp)}
-                                onChange={() => handleFilterChange('experience', exp)}
-                                label={`${exp} years`}
-                                className="mr-2"
-                            />
+                    <Label className="text-sm font-medium mt-2">Experience (years)</Label>
+                    <div className="flex flex-col items-start gap-2 ml-3">
+                        {experience.map((exp) => (
+                            <div className='flex items-center cursor-pointer' key={exp}>
+                                <Checkbox
+                                id={exp}
+                                    checked={filters.experience.includes(exp)}
+                                    onCheckedChange={() => handleCheckboxChange('experience', exp)}
+                                    className="mr-2"
+                                />
+                                <Label htmlFor={exp}>{exp} year(s)</Label>
+                            </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Qualification */}
                 <div className="flex flex-col gap-2 w-full">
-                    <label className="text-sm font-medium">Qualification</label>
-                    <div className="flex flex-wrap gap-2">
-                        <Checkbox
-                            checked={filters.qualification.includes("any")}
-                            onChange={() => handleFilterChange('qualification', 'any')}
-                            label="Any"
-                            className="mr-2"
-                        />
-                        {qualifications.map((qual) => (
-                            <Checkbox
-                                key={qual}
-                                checked={filters.qualification.includes(qual)}
-                                onChange={() => handleFilterChange('qualification', qual)}
-                                label={qual}
-                                className="mr-2"
-                            />
+                    <Label className="text-sm font-medium mt-2">Qualification</Label>
+                    <div className="flex flex-col items-start gap-2 ml-3">
+                        {qualification.map((qual) => (
+                            <div className='flex items-center cursor-pointer' key={qual}>
+                                <Checkbox
+                                id={qual}
+                                    checked={filters.qualification.includes(qual)}
+                                    onCheckedChange={() => handleCheckboxChange('qualification', qual)}
+                                    className="mr-2"
+                                />
+                                <Label htmlFor={qual}>{qual}</Label>
+                            </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Work Location */}
+                {/* Location */}
                 <div className="flex flex-col gap-2 w-full">
-                    <label className="text-sm font-medium">Work Location</label>
-                    <div className="flex flex-wrap gap-2">
-                        <Checkbox
-                            checked={filters.location.includes("any")}
-                            onChange={() => handleFilterChange('location', 'any')}
-                            label="Any"
-                            className="mr-2"
-                        />
-                        {locations.map((loc) => (
-                            <Checkbox
-                                key={loc}
-                                checked={filters.location.includes(loc)}
-                                onChange={() => handleFilterChange('location', loc)}
-                                label={loc}
-                                className="mr-2"
-                            />
+                    <Label className="text-sm font-medium mt-2">Work Location</Label>
+                    <div className="flex flex-col items-start gap-2 ml-3">
+                        {location.map((loc) => (
+                            <div className='flex items-center cursor-pointer' key={loc}>
+                                <Checkbox
+                                id={loc}
+                                    checked={filters.location.includes(loc)}
+                                    onCheckedChange={() => handleCheckboxChange('location', loc)}
+                                    className="mr-2"
+                                />
+                                <Label htmlFor={loc}>{loc}</Label>
+                            </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Skills */}
+                {/* Skills Input */}
                 <div className="flex flex-col gap-2 w-full">
-                    <label className="text-sm font-medium">Skills</label>
+                    <Label className="text-sm font-medium">Skills</Label>
                     <Input
                         placeholder="e.g. React, Python, SQL"
                         value={filters.skills}
-                        onChange={(e) => handleFilterChange('skills', e.target.value)}
+                        onChange={(e) => setFilters({ ...filters, skills: e.target.value })}
                     />
                 </div>
 
-                {/* Salary Range */}
+                {/* Salary Range Slider */}
                 <div className="flex flex-col gap-2 w-full">
                     <div className="flex justify-between">
                         <label className="text-sm font-medium">Salary Range (k)</label>
@@ -174,20 +163,20 @@ export default function JobFilterCard() {
                     <Slider
                         value={filters.salary}
                         min={0}
-                        max={200}
+                        max={199}
                         step={10}
-                        onValueChange={(value) => handleFilterChange('salary', value)}
+                        onValueChange={(value) => setFilters({ ...filters, salary: value })}
                         className="my-2"
                     />
                     <div className="flex justify-between text-xs text-gray-500">
-                        <span>$0k</span>
-                        <span>$200k+</span>
+                        <span>10k</span>
+                        <span>200k+</span>
                     </div>
                 </div>
             </CardContent>
 
             <CardFooter className="p-0">
-                <Button className="w-full mt-2">Apply Filters</Button>
+                <Button onClick={applyFilter} className="w-full mt-2">Apply Filters</Button>
             </CardFooter>
         </Card>
     );

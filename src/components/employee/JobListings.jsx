@@ -2,7 +2,7 @@ import React from "react";
 import { Briefcase, MapPin, Calendar, Building2, Bookmark, BookmarkMinus, DollarSign, Clock } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { saveJob, unsaveJob } from "@/actions/saveJob-action";
-import ApplyJob from "./drawer/applyJob";
+import ApplyJob from "@/components/employee/drawer/ApplyJob";
 import FilterCard from "../shared/FilterCard";
 
 const JobListings = ({ setSelectedJob, setTabValue, setPreviousTab }) => {

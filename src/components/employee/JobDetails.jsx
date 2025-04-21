@@ -1,7 +1,8 @@
 import React from "react";
 import { ArrowLeft, MapPin, Briefcase, Clock, GraduationCap, DollarSign, Calendar, Users, CheckCircle } from "lucide-react";
 import { Button } from "../ui/button";
-import ApplyJob from "./drawer/ApplyJob";
+import ApplyJob from "@/components/employee/drawer/ApplyJob";
+
 
 const JobDetails = ({ job, setTabValue, previousTab }) => {
     if (!job) {

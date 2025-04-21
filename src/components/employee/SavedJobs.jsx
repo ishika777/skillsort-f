@@ -2,7 +2,8 @@ import React from "react";
 import { BookmarkMinus, MapPin, Calendar, Briefcase, Building2, Clock4, ExternalLink } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { unsaveJob } from "@/actions/saveJob-action";
-import ApplyJob from "./drawer/ApplyJob";
+import ApplyJob from "@/components/employee/drawer/ApplyJob";
+
 
 const SavedJobs = ({ setSelectedJob, setTabValue, setPreviousTab }) => {
     const dispatch = useDispatch();

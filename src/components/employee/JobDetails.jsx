@@ -184,7 +184,6 @@ const JobDetails = ({ job, setTabValue, previousTab }) => {
                     </div>
                 </div>
                 
-                {/* The ApplyJob drawer component will be triggered from the Apply Now buttons */}
                 <ApplyJob />
             </div>
         </div>

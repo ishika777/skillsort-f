@@ -268,3 +268,4 @@ const ApplyJob = ({ job }) => {
 };
 
 export default ApplyJob;
+

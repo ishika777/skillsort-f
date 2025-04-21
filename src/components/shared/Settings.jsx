@@ -46,7 +46,7 @@ const Settings = () => {
     const inittials = user?.fullname?.split(" ").map(part => part[0]).join("").toUpperCase();
 
     return (
-        <div className="tabs-scroll p-6 space-y-6 overflow-y-auto w-full h-[calc(100vh-64px)]">
+        <div className="tabs-scroll p-6 space-y-6 overflow-y-auto w-full h-full">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-1">
                     <Card className="mb-6">

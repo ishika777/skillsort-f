@@ -15,7 +15,7 @@ export const signup = async (dispatch, input) => {
             input,
             {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                 },
             }
         );

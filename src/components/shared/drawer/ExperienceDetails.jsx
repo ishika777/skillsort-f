@@ -1,20 +1,19 @@
-import {
-    Drawer, DrawerClose, DrawerContent, DrawerFooter,
-    DrawerHeader, DrawerTrigger, DrawerTitle, DrawerDescription
-} from "@/components/ui/drawer";
+import {Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTrigger, DrawerTitle, DrawerDescription} from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Edit, Loader2, PlusCircle, Trash2, GraduationCap, School, Calendar } from "lucide-react";
+import { Edit, Loader2, PlusCircle, Trash2, Calendar, Building, Briefcase } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { useState } from "react";
-import { updateEducationalDetails } from "@/actions/user-actions";
+import { updateExperienceDetails } from "@/actions/user-actions";
+import { Textarea } from "@/components/ui/textarea";
 
-const EducationDetails = () => {
-    const dispatch = useDispatch();
+const ExperienceDetails = () => {
+    const dispatch = useDispatch()
     const { user, loading } = useSelector((state) => state.user);
-    const [input, setInput] = useState(() => user?.education?.map(e => ({ ...e })) || []);
+
+    const [input, setInput] = useState(user?.experience || []);
 
     const handleChange = (index, field, value) => {
         const updated = [...input];
@@ -22,37 +21,35 @@ const EducationDetails = () => {
         setInput(updated);
     };
 
-    const addEducation = () => {
-        setInput((prev) => [...prev, { degree: "", institution: "", startYear: "", endYear: "" }]);
+    const addExperience = () => {
+        setInput((prev) => [...prev, { jobTitle: "", companyName: "", startDate: "", endDate: "", description: ""}]);
     };
 
-    const removeEducation = (index) => {
+    const removeExperience = (index) => {
         setInput((prev) => prev.filter((_, i) => i !== index));
     };
 
     const submitHandler = async() => {
-        const hasEmptyField = input.some((edu) => {
-            return (!edu.degree || !edu.institution || !edu.startYear || !edu.endYear);
+        const hasEmptyField = input.some((exp) => {
+            return (!exp.jobTitle || !exp.companyName || !exp.startDate || !exp.endDate || !exp.description);
         });
-        const invalidTimeline = input.some((edu) => {
-            return Number(edu.startYear) >= Number(edu.endYear) 
-        });
-        
+        const invalidTimeline = input.some((exp) => {
+            return exp.startDate >= exp.endDate
+        })
         if (hasEmptyField) {
-            toast.error("Please fill all the education fields.");
+            toast.error("Please fill all the experience fields.");
             return;
         }
         if (invalidTimeline) {
-            toast.error("Start year must be before end year.");
+            toast.error("Start date must be before end date.");
             return;
         }
-        
         try {
-            await updateEducationalDetails(dispatch, input);
-            toast.success("Education details updated successfully!");
+            await updateExperienceDetails(dispatch, input)
+            toast.success("Experience details updated successfully!");
         } catch (error) {
-            toast.error("Failed to update education details.");
-            console.log(error);
+            toast.error("Failed to update experience details.");
+            console.log(error)
         }
     };
 
@@ -73,9 +70,9 @@ const EducationDetails = () => {
             <DrawerContent className="p-4 bg-white">
                 <DrawerHeader className="pb-2 border-b">
                     <DrawerTitle className="flex items-center justify-between text-xl font-bold">
-                        <span>Educational Background</span>
+                        <span>Professional Experience</span>
                         <Button 
-                            onClick={addEducation} 
+                            onClick={addExperience} 
                             className="bg-red-100 hover:bg-red-200 transition-colors rounded-full p-2"
                             variant="ghost"
                             size="icon"
@@ -84,107 +81,111 @@ const EducationDetails = () => {
                         </Button>
                     </DrawerTitle>
                     <DrawerDescription className="text-gray-500">
-                        Add or update your academic qualifications
+                        Add or update your work experience details
                     </DrawerDescription>
                 </DrawerHeader>
 
                 <div className="py-6 space-y-6 max-h-[70vh] overflow-y-auto">
                     {input.length === 0 ? (
                         <div className="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-                            <GraduationCap className="mx-auto text-gray-400 mb-2" size={30} />
-                            <p className="text-gray-500 font-medium">No education entries added yet</p>
+                            <PlusCircle className="mx-auto text-gray-400 mb-2" size={30} />
+                            <p className="text-gray-500 font-medium">No experience added yet</p>
                             <Button 
-                                onClick={addEducation} 
+                                onClick={addExperience} 
                                 className="mt-4 bg-red-500 hover:bg-red-600 text-white"
                                 size="sm"
                             >
-                                Add Education
+                                Add Experience
                             </Button>
                         </div>
                     ) : (
-                        input.map((edu, index) => (
+                        input.map((exp, index) => (
                             <div key={index} className="flex flex-col gap-4 p-6 rounded-lg border border-gray-200 bg-gray-50 relative shadow-sm hover:shadow-md transition-shadow">
                                 <div className="absolute top-4 right-4 flex gap-2">
                                     <button
                                         type="button"
-                                        onClick={() => removeEducation(index)}
+                                        onClick={() => removeExperience(index)}
                                         className="text-gray-500 hover:text-red-500 transition-colors bg-white p-1.5 rounded-full border border-gray-200"
-                                        aria-label="Remove education"
+                                        aria-label="Remove experience"
                                     >
                                         <Trash2 size={16} />
                                     </button>
                                 </div>
                                 
-                                <h3 className="font-medium text-gray-700 mb-2">Education #{index + 1}</h3>
+                                <h3 className="font-medium text-gray-700 mb-2">Experience #{index + 1}</h3>
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="w-full">
-                                        <Label className="mb-1.5 flex items-center gap-1.5" htmlFor={`degree-${index}`}>
-                                            <GraduationCap className="h-4 w-4 text-gray-500" />
-                                            <span>Degree</span>
+                                        <Label className="mb-1.5 flex items-center gap-1.5" htmlFor={`jobTitle-${index}`}>
+                                            <Briefcase className="h-4 w-4 text-gray-500" />
+                                            <span>Job Title</span>
                                         </Label>
                                         <Input
-                                            id={`degree-${index}`}
-                                            type="text"
-                                            placeholder="B.Tech in Computer Science"
+                                            id={`jobTitle-${index}`}
+                                            value={exp.jobTitle}
+                                            placeholder="Software Developer"
+                                            onChange={(e) => handleChange(index, "jobTitle", e.target.value)}
                                             className="bg-white"
-                                            value={edu.degree}
-                                            onChange={(e) => handleChange(index, "degree", e.target.value)}
                                         />
                                     </div>
 
                                     <div className="w-full">
-                                        <Label className="mb-1.5 flex items-center gap-1.5" htmlFor={`institution-${index}`}>
-                                            <School className="h-4 w-4 text-gray-500" />
-                                            <span>Institution</span>
+                                        <Label className="mb-1.5 flex items-center gap-1.5" htmlFor={`companyName-${index}`}>
+                                            <Building className="h-4 w-4 text-gray-500" />
+                                            <span>Company Name</span>
                                         </Label>
                                         <Input
-                                            id={`institution-${index}`}
-                                            type="text"
-                                            placeholder="XYZ University"
+                                            id={`companyName-${index}`}
+                                            value={exp.companyName}
+                                            placeholder="Company XYZ"
+                                            onChange={(e) => handleChange(index, "companyName", e.target.value)}
                                             className="bg-white"
-                                            value={edu.institution}
-                                            onChange={(e) => handleChange(index, "institution", e.target.value)}
                                         />
                                     </div>
                                 </div>
-                                
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="w-full">
-                                        <Label className="mb-1.5 flex items-center gap-1.5" htmlFor={`startYear-${index}`}>
+                                        <Label className="mb-1.5 flex items-center gap-1.5" htmlFor={`startDate-${index}`}>
                                             <Calendar className="h-4 w-4 text-gray-500" />
-                                            <span>Start Year</span>
+                                            <span>Start Date</span>
                                         </Label>
                                         <Input
-                                            id={`startYear-${index}`}
-                                            type="number"
-                                            placeholder="YYYY"
-                                            min="1900" max="2099"
+                                            id={`startDate-${index}`}
+                                            type="month"
+                                            value={exp.startDate}
+                                            onChange={(e) => handleChange(index, "startDate", e.target.value)}
                                             className="bg-white"
-                                            value={edu.startYear}
-                                            onChange={(e) => handleChange(index, "startYear", e.target.value)}
                                         />
                                     </div>
 
                                     <div className="w-full">
-                                        <Label className="mb-1.5 flex items-center gap-1.5" htmlFor={`endYear-${index}`}>
+                                        <Label className="mb-1.5 flex items-center gap-1.5" htmlFor={`endDate-${index}`}>
                                             <Calendar className="h-4 w-4 text-gray-500" />
-                                            <span>End Year</span>
+                                            <span>End Date</span>
                                         </Label>
                                         <Input
-                                            id={`endYear-${index}`}
-                                            type="number"
-                                            placeholder="YYYY"
-                                            min="1900" max="2099"
+                                            id={`endDate-${index}`}
+                                            type="month"
+                                            value={exp.endDate}
+                                            onChange={(e) => handleChange(index, "endDate", e.target.value)}
                                             className="bg-white"
-                                            value={edu.endYear}
-                                            onChange={(e) => handleChange(index, "endYear", e.target.value)}
                                         />
                                     </div>
+                                </div>
+                            
+                                <div className="w-full">
+                                    <Label className="mb-1.5" htmlFor={`description-${index}`}>Description</Label>
+                                    <Textarea
+                                        id={`description-${index}`}
+                                        value={exp.description}
+                                        placeholder="Describe your responsibilities and achievements..."
+                                        onChange={(e) => handleChange(index, "description", e.target.value)}
+                                        className="min-h-24 bg-white"
+                                    />
                                 </div>
                             </div>
-                        ))
-                    )}
+                        )))}
                 </div>
 
                 <DrawerFooter className="pt-4 border-t">
@@ -218,4 +219,4 @@ const EducationDetails = () => {
     );
 };
 
-export default EducationDetails;
+export default ExperienceDetails;

@@ -6,10 +6,10 @@ const MainLayout = () => {
     return (
 
         <div className="flex flex-col justify-between w-screen h-fit overflow-x-hidden">
-            <header className="w-full">
+            {/* <header className="w-full">
                 <Navbar />
-            </header>
-            <div className="h-[calc(100vh-64px)] w-full overflow-y-auto">
+            </header> */}
+            <div className="h-full w-full overflow-y-auto">
                 <Outlet />
             </div>
             {/* <footer className="w-full">

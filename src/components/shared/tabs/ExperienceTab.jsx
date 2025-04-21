@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Briefcase, Building, Calendar } from "lucide-react";
-import CompanyDetails from '../drawer/CompanyDetails';
+import ExperienceDetails from '../drawer/ExperienceDetails';
 
 const ExperienceTab = () => {
     const { user } = useSelector((state) => state.user)
@@ -14,7 +14,7 @@ const ExperienceTab = () => {
                     <CardTitle className="text-lg">Work Experience</CardTitle>
                     <CardDescription>Your professional background</CardDescription>
                 </div>
-                <CompanyDetails />
+                <ExperienceDetails />
             </CardHeader>
             <CardContent>
                 {user?.experience && user?.experience.length > 0 ? (

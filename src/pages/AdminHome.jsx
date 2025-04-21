@@ -3,7 +3,7 @@ import React from 'react'
 
 const AdminHome = () => {
   return (
-    <div className='w-full'>
+    <div className='w-screen max-w-screen h-screen'>
         <Layout />
     </div>
   )

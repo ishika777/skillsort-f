@@ -99,7 +99,7 @@ const appRouter = createBrowserRouter([
 
 function App() {
 
-    const { isCheckingAuth, user } = useSelector(state => state.user);
+    const { isCheckingAuth, user } = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {

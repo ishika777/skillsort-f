@@ -1,123 +1,184 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Eye, EyeOff, Loader2, LockKeyhole, Moon, Sun } from 'lucide-react'
+import { Eye, EyeOff, Loader2, LockKeyhole, ArrowLeft } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { resetPassword } from '@/actions/user-actions'
-import ThemeButton from "@/components/shared/ThemeButton";
+import ThemeButton from "@/components/shared/ThemeButton"
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
-
-
+import { Alert, AlertDescription } from '@/components/ui/alert'
 
 const ResetPassword = () => {
-
     const params = useParams();
     const resetToken = params.resetToken;
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    
     const [newPassword, setNewPassword] = useState("");
-    const {loading} = useSelector((state) => state.user);
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const { loading } = useSelector((state) => state.user);
     const [error, setError] = useState("");
-
+    const [success, setSuccess] = useState(false);
     const [seePassword, setSeePassword] = useState(false);
+    const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
 
-
-    const submitHandaler = async(e) => {
-        e.preventDefault();
+    const validatePassword = () => {
         if (newPassword.length < 6) {
             setError("Password must be at least 6 characters");
+            return false;
+        }
+        
+        if (newPassword !== confirmPassword) {
+            setError("Passwords do not match");
+            return false;
+        }
+        
+        return true;
+    };
+
+    const submitHandler = async(e) => {
+        e.preventDefault();
+        setError("");
+        
+        if (!validatePassword()) {
             return;
         }
+        
         try {
             const res = await resetPassword(dispatch, resetToken, newPassword);
-            if(res){
-                navigate("/login")
+            if(res) {
+                setSuccess(true);
+                setTimeout(() => {
+                    navigate("/login");
+                }, 2000);
             }
         } catch (error) {
-            console.log(error)
-        }finally{
-            setLoading(false)
+            console.log(error);
+            setError("Failed to reset password. The link may be expired or invalid.");
         }
-    }
+    };
 
     return (
+        <div className="flex flex-col items-center justify-center h-full bg-gray-50 dark:bg-gray-900 px-4">
+            <div className="absolute top-4 right-4">
+                <ThemeButton />
+            </div>
+            
+            <div className="w-full max-w-md">
+                <Card className="border-gray-200 dark:border-gray-800 shadow-lg dark:shadow-gray-800/20 overflow-hidden">
+                    <CardHeader className="space-y-1 pb-6 pt-8 border-b dark:border-gray-800">
+                        <div className="flex justify-center mb-2">
+                            <div className="p-2 rounded-full bg-red-100 dark:bg-red-900/20">
+                                <LockKeyhole className="h-6 w-6 text-red-500" />
+                            </div>
+                        </div>
+                        <CardTitle className="text-2xl font-bold text-center">
+                            <span className="text-red-500">Skill</span>Sort
+                        </CardTitle>
+                        <CardDescription className="text-center text-gray-500 dark:text-gray-400">
+                            Create a new password for your account
+                        </CardDescription>
+                    </CardHeader>
 
-        <div className="flex flex-col items-center justify-center min-h-screen">
-    <div className="absolute top-4 right-4">
-        <ThemeButton />
-    </div>
+                    <CardContent className="pt-6">
+                        {success ? (
+                            <Alert className="bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800">
+                                <AlertDescription className="text-green-600 dark:text-green-400 py-2">
+                                    Password reset successful! Redirecting to login...
+                                </AlertDescription>
+                            </Alert>
+                        ) : (
+                            <form onSubmit={submitHandler} className="space-y-5">
+                                <div className="space-y-1">
+                                    <Label htmlFor="password" className="text-sm font-medium">
+                                        New Password
+                                    </Label>
+                                    <div className="relative">
+                                        <Input
+                                            id="password"
+                                            required
+                                            type={seePassword ? "text" : "password"}
+                                            placeholder="••••••••"
+                                            name="password"
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                            className="pl-10"
+                                        />
+                                        <LockKeyhole className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                                        <button
+                                            type="button"
+                                            onClick={() => setSeePassword(!seePassword)}
+                                            className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                                        >
+                                            {seePassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div className="space-y-1">
+                                    <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                                        Confirm Password
+                                    </Label>
+                                    <div className="relative">
+                                        <Input
+                                            id="confirmPassword"
+                                            required
+                                            type={seeConfirmPassword ? "text" : "password"}
+                                            placeholder="••••••••"
+                                            name="confirmPassword"
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            className="pl-10"
+                                        />
+                                        <LockKeyhole className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                                        <button
+                                            type="button"
+                                            onClick={() => setSeeConfirmPassword(!seeConfirmPassword)}
+                                            className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                                        >
+                                            {seeConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                        </button>
+                                    </div>
+                                </div>
 
-    <Card className="w-full min-w-[400px] border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-gray-800/20">
-        <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">
-                <span className="text-red-500">Skill</span>Sort
-            </CardTitle>
-            <CardDescription className="text-center">
-                Enter your new password to reset your account
-            </CardDescription>
-        </CardHeader>
+                                {error && (
+                                    <Alert className="bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800 py-2">
+                                        <AlertDescription className="text-red-600 dark:text-red-400 text-sm">
+                                            {error}
+                                        </AlertDescription>
+                                    </Alert>
+                                )}
 
-        <CardContent>
-            <form onSubmit={submitHandaler} className="space-y-5">
-                <div className="relative">
+                                <Button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-5"
+                                >
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Resetting Password...
+                                        </>
+                                    ) : (
+                                        "Reset Password"
+                                    )}
+                                </Button>
+                            </form>
+                        )}
+                    </CardContent>
+                    
+                    <CardFooter className="flex justify-center py-4 border-t dark:border-gray-800">
+                        <Link to="/login" className="text-sm text-gray-500 hover:text-red-500 flex items-center gap-1 transition-colors">
+                            <ArrowLeft size={16} />
+                            Back to Login
+                        </Link>
+                    </CardFooter>
+                </Card>
+            </div>
+        </div>
+    );
+};
 
-                    <Input
-                        id="password"
-                        required
-                        type={seePassword ? "text" : "password"}
-                        placeholder="••••••••"
-                        name="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        className={`pl-10`}
-                    />
-                    <LockKeyhole className="absolute left-3 top-2 h-5 w-5 text-gray-400 dark:text-gray-500" />
-                    <button
-                        type="button"
-                        onClick={() => setSeePassword(!seePassword)}
-                        className="absolute right-3 top-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-                    >
-                        {seePassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
-                </div>
-                {
-                    error && (<p className="text-xs text-red-500 mt-1">{error}</p>)
-                }
-
-                <Button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-red-500 hover:bg-red-600 text-white font-medium"
-                >
-                    {loading ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Resetting Password...
-                        </>
-                    ) : (
-                        "Reset Password"
-                    )}
-                </Button>
-
-                <div className="text-center text-sm">
-                    Back to{" "}
-                    <Link to="/login" className="text-red-500 hover:text-red-600 font-medium">
-                        Login
-                    </Link>
-                </div>
-            </form>
-        </CardContent>
-    </Card>
-</div>
-
-
-       
-    )
-}
-
-export default ResetPassword
+export default ResetPassword;

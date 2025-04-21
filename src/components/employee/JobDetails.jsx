@@ -1,13 +1,25 @@
 import React from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MapPin, Briefcase, Clock, GraduationCap, DollarSign, Calendar, Users, CheckCircle } from "lucide-react";
 import { Button } from "../ui/button";
 import ApplyJob from "./drawer/ApplyJob";
 
 const JobDetails = ({ job, setTabValue, previousTab }) => {
     if (!job) {
         return (
-            <div className="p-6">
-                <p className="text-gray-500 text-center">No job selected.</p>
+            <div className="flex items-center justify-center h-full bg-gray-50">
+                <div className="text-center p-8 bg-white rounded-xl shadow-sm border border-gray-100">
+                    <div className="text-gray-400 mb-4">
+                        <Briefcase size={48} className="mx-auto opacity-50" />
+                    </div>
+                    <p className="text-gray-500 font-medium">No job selected</p>
+                    <p className="text-gray-400 text-sm mt-2">Please select a job from the list to view details</p>
+                    <Button 
+                        className="mt-4 bg-blue-600 hover:bg-blue-700 text-white"
+                        onClick={() => setTabValue(previousTab)}
+                    >
+                        Back to Jobs
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -20,131 +32,132 @@ const JobDetails = ({ job, setTabValue, previousTab }) => {
         });
     };
 
+    // Calculate days remaining until deadline
+    const calculateDaysRemaining = (deadlineDate) => {
+        const today = new Date();
+        const deadline = new Date(deadlineDate);
+        const diffTime = deadline - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    };
+
+    const daysRemaining = calculateDaysRemaining(job.deadline);
+    const isDeadlineSoon = daysRemaining <= 7 && daysRemaining > 0;
+    const isDeadlinePassed = daysRemaining < 0;
+
     return (
-        <div className="w-full p-6 overflow-y-auto h-[calc(100vh-64px)]">
-            <div className="flex flex-col justify-between h-full">
-                <div className="rounded-xl bg-white">
-                    <div className="border-b border-gray3-100 pb-5 mb-3">
-                        <div className="flex items-center gap-5">
-                            <div
-                                className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-1 rounded-lg cursor-pointer transition-colors duration-200"
-                                onClick={() => setTabValue(previousTab)}
-                            >
-                                <ArrowLeft size={20} />
+        <div className="tabs-scroll w-full p-6 overflow-y-auto h-full pt-4">
+            <div className="max-w-4xl mx-auto">
+                {/* Header with back button */}
+                <div className="flex items-center gap-3 mb-6">
+                    <button
+                        className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-full transition-colors duration-200"
+                        onClick={() => setTabValue(previousTab)}
+                    >
+                        <ArrowLeft size={20} />
+                    </button>
+                    <p className="text-sm text-gray-500">Back to jobs</p>
+                </div>
+
+                {/* Main Content */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    {/* Company Info & Apply Button */}
+                    <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                        <div className="flex items-center">
+                            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mr-4">
+                                {job.company ? job.company.charAt(0) : "J"}
                             </div>
-                            <h2 className="text-3xl font-bold text-gray-800 mb-3">{job.title}</h2>
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-800">{job.title}</h2>
+                                <p className="text-gray-500 text-sm">{job.company || "Company name"}</p>
+                            </div>
                         </div>
-                        <p className="text-gray-700 text-sm leading-relaxed">{job.description}</p>
+                        <div>
+                            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6">
+                                Apply Now
+                            </Button>
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-8 text-sm mb-4">
-                        <div className="flex items-center">
-                            <div className="w-5 h-5 mt-0.5 text-blue-500 mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                            </div>
-                            <div>
-                                <p className="font-semibold text-gray-800">Location</p>
-                                <p className="text-gray-600">{job.location}</p>
-                            </div>
-                        </div>
+                    {/* Job Description */}
+                    <div className="p-6 border-b border-gray-100">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-3">Job Description</h3>
+                        <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">{job.description}</p>
+                    </div>
 
-                        <div className="flex items-center">
-                            <div className="w-5 h-5 mt-0.5 text-blue-500 mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                                </svg>
+                    {/* Job Details */}
+                    <div className="p-6">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Job Details</h3>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="col-span-2 flex items-center justify-between p-4 rounded-lg bg-blue-50 border border-blue-100">
+                                <div className="flex items-center">
+                                    <Calendar className="w-5 h-5 text-blue-600 mr-3" />
+                                    <div>
+                                        <p className="font-medium text-gray-800">Application Deadline</p>
+                                        <p className={`text-sm ${isDeadlinePassed ? 'text-red-600' : isDeadlineSoon ? 'text-orange-600' : 'text-blue-600'} font-medium`}>
+                                            {formatDate(job.deadline)}
+                                            {isDeadlinePassed ? ' (Closed)' : 
+                                             isDeadlineSoon ? ` (${daysRemaining} days left)` : 
+                                             ` (${daysRemaining} days remaining)`}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="text-right">
+                                    <p className="font-medium text-gray-800">Openings</p>
+                                    <p className="text-green-600 font-medium">{job.openings} positions</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="font-semibold text-gray-800">Job Type</p>
-                                <p className="text-gray-600">{job.jobType}</p>
-                            </div>
-                        </div>
 
-                        <div className="flex items-center">
-                            <div className="w-5 h-5 mt-0.5 text-blue-500 mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
+                            <div className="flex items-start space-x-3">
+                                <MapPin className="w-5 h-5 mt-0.5 text-blue-600" />
+                                <div>
+                                    <p className="font-medium text-gray-800">Location</p>
+                                    <p className="text-gray-600 text-sm">{job.location}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="font-semibold text-gray-800">Experience</p>
-                                <p className="text-gray-600">{job.experience} years</p>
-                            </div>
-                        </div>
 
-                        <div className="flex items-center">
-                            <div className="w-5 h-5 mt-0.5 text-blue-500 mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                                    <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
-                                </svg>
+                            <div className="flex items-start space-x-3">
+                                <Briefcase className="w-5 h-5 mt-0.5 text-blue-600" />
+                                <div>
+                                    <p className="font-medium text-gray-800">Job Type</p>
+                                    <p className="text-gray-600 text-sm">{job.jobType}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="font-semibold text-gray-800">Qualification</p>
-                                <p className="text-gray-600">{job.qualification}</p>
-                            </div>
-                        </div>
 
-                        <div className="flex items-center">
-                            <div className="w-5 h-5 mt-0.5 text-blue-500 mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <line x1="12" y1="1" x2="12" y2="23"></line>
-                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                                </svg>
+                            <div className="flex items-start space-x-3">
+                                <Clock className="w-5 h-5 mt-0.5 text-blue-600" />
+                                <div>
+                                    <p className="font-medium text-gray-800">Experience</p>
+                                    <p className="text-gray-600 text-sm">{job.experience} years</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="font-semibold text-gray-800">Salary</p>
-                                <p className="text-gray-600">₹{job.salary} /month</p>
-                            </div>
-                        </div>
 
-                        <div className="flex items-center">
-                            <div className="w-5 h-5 mt-0.5 text-red-500 mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                </svg>
+                            <div className="flex items-start space-x-3">
+                                <GraduationCap className="w-5 h-5 mt-0.5 text-blue-600" />
+                                <div>
+                                    <p className="font-medium text-gray-800">Qualification</p>
+                                    <p className="text-gray-600 text-sm">{job.qualification}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="font-semibold text-gray-800">Deadline</p>
-                                <p className="py-1 rounded-md text-red-600 font-medium">{formatDate(job.deadline)}</p>
-                            </div>
-                        </div>
 
-                        <div className="flex items-center">
-                            <div className="w-5 h-5 mt-0.5 text-green-500 mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p className="font-semibold text-gray-800">Openings</p>
-                                <p className="py-1 rounded-md text-green-600 font-medium">{job.openings}</p>
+                            <div className="flex items-start space-x-3">
+                                <DollarSign className="w-5 h-5 mt-0.5 text-blue-600" />
+                                <div>
+                                    <p className="font-medium text-gray-800">Salary</p>
+                                    <p className="text-gray-600 text-sm">₹{job.salary} /month</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="mb-8">
-                        <p className="font-semibold text-gray-800 mb-3 flex items-center text-lg">
-                            <span className="w-6 h-6 mr-2 text-blue-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                </svg>
-                            </span>
+                    {/* Skills Required */}
+                    <div className="p-6 border-t border-gray-100">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <CheckCircle className="w-5 h-5 mr-2 text-blue-600" />
                             Skills Required
-                        </p>
-                        <div className="flex flex-wrap gap-2 ml-7">
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
                             {job.skills.map((skill, idx) => (
                                 <span
                                     key={idx}
@@ -156,11 +169,24 @@ const JobDetails = ({ job, setTabValue, previousTab }) => {
                         </div>
                     </div>
 
+                    {/* Apply Button */}
+                    <div className="p-6 border-t border-gray-100 bg-gray-50">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <p className="text-sm text-gray-500">
+                                    Posted on {job.postedDate ? formatDate(job.postedDate) : "Recently"}
+                                </p>
+                            </div>
+                            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8">
+                                Apply Now
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-
+                
+                {/* The ApplyJob drawer component will be triggered from the Apply Now buttons */}
                 <ApplyJob />
             </div>
-
         </div>
     );
 };

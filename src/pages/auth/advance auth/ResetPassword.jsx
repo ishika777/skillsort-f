@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input'
 import { Eye, EyeOff, Loader2, LockKeyhole, ArrowLeft } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { resetPassword } from '@/actions/user-actions'
-import ThemeButton from "@/components/shared/ThemeButton"
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
@@ -61,28 +60,23 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-full bg-gray-50 dark:bg-gray-900 px-4">
-            <div className="absolute top-4 right-4">
-                <ThemeButton />
-            </div>
-            
-            <div className="w-full max-w-md">
-                <Card className="border-gray-200 dark:border-gray-800 shadow-lg dark:shadow-gray-800/20 overflow-hidden">
-                    <CardHeader className="space-y-1 pb-6 pt-8 border-b dark:border-gray-800">
-                        <div className="flex justify-center mb-2">
+        <div className="flex flex-col items-center justify-center w-screen h-screen bg-gray-50 dark:bg-gray-900">
+                <Card className="border-gray-200  w-[450px] dark:border-gray-800 shadow-lg dark:shadow-gray-800/20 overflow-hidden">
+                    <CardHeader className="pt-4 dark:border-gray-800">
+                        <div className="flex justify-center">
                             <div className="p-2 rounded-full bg-red-100 dark:bg-red-900/20">
                                 <LockKeyhole className="h-6 w-6 text-red-500" />
                             </div>
                         </div>
                         <CardTitle className="text-2xl font-bold text-center">
-                            <span className="text-red-500">Skill</span>Sort
+                            Reset Password
                         </CardTitle>
                         <CardDescription className="text-center text-gray-500 dark:text-gray-400">
                             Create a new password for your account
                         </CardDescription>
                     </CardHeader>
 
-                    <CardContent className="pt-6">
+                    <CardContent className="pt-3">
                         {success ? (
                             <Alert className="bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800">
                                 <AlertDescription className="text-green-600 dark:text-green-400 py-2">
@@ -90,7 +84,7 @@ const ResetPassword = () => {
                                 </AlertDescription>
                             </Alert>
                         ) : (
-                            <form onSubmit={submitHandler} className="space-y-5">
+                            <form onSubmit={submitHandler} className="space-y-6">
                                 <div className="space-y-1">
                                     <Label htmlFor="password" className="text-sm font-medium">
                                         New Password
@@ -106,11 +100,11 @@ const ResetPassword = () => {
                                             onChange={(e) => setNewPassword(e.target.value)}
                                             className="pl-10"
                                         />
-                                        <LockKeyhole className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                                        <LockKeyhole className="absolute left-3 top-2 h-5 w-5 text-gray-400 dark:text-gray-500" />
                                         <button
                                             type="button"
                                             onClick={() => setSeePassword(!seePassword)}
-                                            className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                                            className="absolute right-3 top-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                                         >
                                             {seePassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                         </button>
@@ -132,11 +126,11 @@ const ResetPassword = () => {
                                             onChange={(e) => setConfirmPassword(e.target.value)}
                                             className="pl-10"
                                         />
-                                        <LockKeyhole className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                                        <LockKeyhole className="absolute left-3 top-2 h-5 w-5 text-gray-400 dark:text-gray-500" />
                                         <button
                                             type="button"
                                             onClick={() => setSeeConfirmPassword(!seeConfirmPassword)}
-                                            className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                                            className="absolute right-3 top-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                                         >
                                             {seeConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                         </button>
@@ -168,16 +162,8 @@ const ResetPassword = () => {
                             </form>
                         )}
                     </CardContent>
-                    
-                    <CardFooter className="flex justify-center py-4 border-t dark:border-gray-800">
-                        <Link to="/login" className="text-sm text-gray-500 hover:text-red-500 flex items-center gap-1 transition-colors">
-                            <ArrowLeft size={16} />
-                            Back to Login
-                        </Link>
-                    </CardFooter>
                 </Card>
             </div>
-        </div>
     );
 };
 

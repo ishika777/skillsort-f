@@ -1,36 +1,18 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Loader2, ArrowLeft, Mail } from "lucide-react"
-import { useRef, useState, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { verifyEmail } from "@/actions/user-actions"
-import ThemeButton from "@/components/shared/ThemeButton";
-import { useDispatch, useSelector } from "react-redux"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Loader2, ArrowLeft, Mail } from "lucide-react";
+import { useRef, useState } from "react"; // Remove useEffect, useNavigate, useSelector, useDispatch
+import { Link } from "react-router-dom"; // Remove useNavigate
+import { verifyEmail } from "@/actions/user-actions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useSelector } from "react-redux";
 
-const VerifyEmail = () => {
-    const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-    const [timer, setTimer] = useState(60);
+const VerifyEmail = ({ shadowOtp }) => { // Pass shadowOtp as a prop
+    const [otp, setOtp] = useState(shadowOtp || ["", "", "", "", "", ""]); // Initialize with shadowOtp or empty array
+    const {loading} = useSelector((state) => state.user)
     const [errorMessage, setErrorMessage] = useState("");
-    const [timerActive, setTimerActive] = useState(true);
     const inputRef = useRef([]);
-    const navigate = useNavigate();
-    const { loading, user } = useSelector((state) => state.user);
-    const dispatch = useDispatch();
-
-    // Timer countdown effect
-    useEffect(() => {
-        let interval;
-        if (timerActive && timer > 0) {
-            interval = setInterval(() => {
-                setTimer((prevTimer) => prevTimer - 1);
-            }, 1000);
-        } else if (timer === 0) {
-            setTimerActive(false);
-        }
-        return () => clearInterval(interval);
-    }, [timer, timerActive]);
 
     const handleChange = (index, value) => {
         if (/^[a-zA-Z0-9]$/.test(value) || value === "") {
@@ -38,12 +20,10 @@ const VerifyEmail = () => {
             newOtp[index] = value;
             setOtp(newOtp);
             
-            // Auto-focus next input
             if (value !== "" && index < 5) {
                 inputRef.current[index + 1].focus();
             }
             
-            // Auto-submit when all fields are filled
             if (index === 5 && value !== "" && !newOtp.includes("")) {
                 setTimeout(() => {
                     document.getElementById("verify-button").click();
@@ -59,13 +39,8 @@ const VerifyEmail = () => {
     }
 
     const resendCode = () => {
-        // Logic to resend code would go here
-        setTimer(60);
-        setTimerActive(true);
         setErrorMessage("");
-        // Reset OTP fields
         setOtp(["", "", "", "", "", ""]);
-        // Focus on first input
         inputRef.current[0].focus();
     }
 
@@ -77,11 +52,7 @@ const VerifyEmail = () => {
         try {
             const success = await verifyEmail(dispatch, verificationCode);
             if (success) {
-                if(user?.role === "Recruiter") {
-                    navigate("/admin");
-                } else {
-                    navigate("/");
-                }
+                navigate(user?.role === "Recruiter" ? "/admin" : "/");
             } else {
                 setErrorMessage("Invalid verification code. Please try again.");
                 // Clear fields on error
@@ -95,26 +66,10 @@ const VerifyEmail = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center h-full p-4 bg-gray-50 dark:bg-gray-900">
-            <div className="absolute top-4 right-4">
-                <ThemeButton />
-            </div>
-            
-            <div className="absolute top-4 left-4">
-                <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => navigate(-1)}
-                    className="flex items-center text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-                >
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back
-                </Button>
-            </div>
-
-            <Card className="w-full max-w-md border-gray-200 dark:border-gray-800 shadow-lg dark:shadow-gray-800/20">
-                <CardHeader className="space-y-1">
-                    <div className="mx-auto bg-red-100 dark:bg-red-900/30 p-3 rounded-full mb-4">
+        <div className="flex flex-col items-center justify-center h-screen w-screen bg-gray-50 dark:bg-gray-900">
+            <Card className=" w-[450px] border-gray-200 dark:border-gray-800 shadow-lg dark:shadow-gray-800/20">
+                <CardHeader className="space-y-1 mb-3">
+                    <div className="mx-auto bg-red-100 dark:bg-red-900/30 p-3 rounded-full ">
                         <Mail className="h-6 w-6 text-red-500" />
                     </div>
                     <CardTitle className="text-2xl font-bold text-center">
@@ -127,7 +82,7 @@ const VerifyEmail = () => {
 
                 <CardContent>
                     {errorMessage && (
-                        <Alert variant="destructive" className="mb-4 border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800">
+                        <Alert variant="destructive" className="mb-5 border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800">
                             <AlertDescription>{errorMessage}</AlertDescription>
                         </Alert>
                     )}
@@ -139,14 +94,12 @@ const VerifyEmail = () => {
                                     required
                                     key={idx}
                                     type="text"
-                                    inputMode="numeric"
                                     value={digit}
                                     maxLength={1}
                                     onChange={(e) => handleChange(idx, e.target.value)}
                                     ref={(element) => inputRef.current[idx] = element}
                                     onKeyDown={(e) => handleKeyDown(idx, e)}
-                                    className="w-12 h-14 text-center text-xl font-semibold rounded-md focus-visible:ring-2 focus-visible:ring-red-500 p-0 transition-all border-gray-300 dark:border-gray-700 dark:bg-gray-800"
-                                    aria-label={`Digit ${idx + 1}`}
+                                    className="w-12 h-13 text-center text-4xl font-semibold text-red-500 rounded-md"
                                 />
                             ))}
                         </div>
@@ -156,7 +109,7 @@ const VerifyEmail = () => {
                                 id="verify-button"
                                 type="submit"
                                 disabled={loading || otp.includes("")}
-                                className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-6"
+                                className="w-full bg-red-500 hover:bg-red-600 text-white font-medium"
                             >
                                 {loading ? (
                                     <>
@@ -173,28 +126,22 @@ const VerifyEmail = () => {
 
                 <CardFooter className="flex flex-col space-y-4 pt-0">
                     <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-                        {timerActive ? (
-                            <p>Resend code in <span className="font-semibold">{timer}s</span></p>
-                        ) : (
-                            <Button 
-                                variant="link" 
-                                onClick={resendCode}
-                                className="text-red-500 hover:text-red-600 p-0 h-auto"
-                            >
-                                Resend verification code
-                            </Button>
-                        )}
+                        <Button 
+                            variant="link" 
+                            onClick={resendCode}
+                            className="text-red-500 hover:text-red-600 p-0 h-auto"
+                        >
+                            Resend verification code
+                        </Button>
                     </div>
                     
                     <div className="flex justify-center">
-                        <Button 
-                            type="button" 
-                            variant="link" 
-                            onClick={() => navigate("/verify-manual")} 
-                            className="text-gray-500 dark:text-gray-400 hover:text-red-500"
+                        <Link 
+                            to="/verify-manual"
+                            className="text-red-500 text-sm font-semibold hover:text-red-600"
                         >
-                            Verify with another method
-                        </Button>
+                            Verify manually
+                        </Link>
                     </div>
                 </CardFooter>
             </Card>
@@ -202,4 +149,4 @@ const VerifyEmail = () => {
     )
 }
 
-export default VerifyEmail
+export default VerifyEmail;

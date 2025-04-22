@@ -27,7 +27,6 @@ const SavedJobs = ({ setSelectedJob, setTabValue, setPreviousTab }) => {
         });
     };
 
-    // Calculate days remaining until deadline
     const getDaysRemaining = (deadline) => {
         if (!deadline) return null;
         const today = new Date();
@@ -40,14 +39,14 @@ const SavedJobs = ({ setSelectedJob, setTabValue, setPreviousTab }) => {
     return (
         <div className="tabs-scroll w-full p-6 overflow-y-auto h-full pt-4">
             {!savedJobs?.jobs?.length ? (
-                <div className="flex flex-col items-center justify-center py-16 bg-gray-50 rounded-xl">
+                <div className="flex flex-col h-full items-center justify-center py-16 bg-gray-50 rounded-xl">
                     <BookmarkMinus size={48} className="text-gray-300 mb-4" />
                     <h3 className="text-lg font-medium text-gray-700 mb-2">No saved jobs found</h3>
                     <p className="text-gray-500 text-center max-w-md">
                         Jobs you save will appear here so you can come back to them later.
                     </p>
                     <button 
-                        onClick={() => setTabValue("search")}
+                        onClick={() => setTabValue("jobs")}
                         className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
                     >
                         Browse Jobs

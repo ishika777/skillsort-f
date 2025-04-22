@@ -36,7 +36,7 @@ const OverviewTab = ({ formatDate }) => {
                     <div>
                         <h3 className="font-medium text-gray-500 text-sm mb-1">Verification Status</h3>
                         <div className="flex items-center">
-                            <Badge variant={user?.isVerified ? "success" : "destructive"} className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">
+                            <Badge variant={user?.isVerified ? "success" : "destructive"} className="bg-green-100 text-green-800">
                                 {user?.isVerified ? "Verified" : "Not Verified"}
                             </Badge>
                         </div>

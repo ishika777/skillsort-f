@@ -42,7 +42,7 @@ const ApplyJob = ({ job }) => {
             } else if (resumeOption === "upload") {
                 formData.append("resume", newResume);
             }
-            formData.append("jobId", job._id);
+            formData.append("jobId", job?._id);
             formData.append("resumeOption", resumeOption);
             
             const result = await applyForJob(dispatch, formData);
@@ -69,23 +69,14 @@ const ApplyJob = ({ job }) => {
             <DrawerContent className="p-4">
                 <DrawerHeader className="pb-2">
                     <DrawerTitle className="text-2xl font-bold text-gray-800">
-                        Apply for {job.title || "this position"}
+                        Apply for {job?.title || "this position"}
                     </DrawerTitle>
-                    <DrawerDescription className="text-gray-600 mt-1">
-                        <Badge className="bg-blue-100 text-blue-800 mr-2 font-normal">
-                            {job.company || "Company"}
-                        </Badge>
-                        {job.location && (
-                            <Badge className="bg-gray-100 text-gray-800 font-normal">
-                                {job.location}
-                            </Badge>
-                        )}
-                    </DrawerDescription>
+                    <DrawerDescription></DrawerDescription>
                 </DrawerHeader>
 
-                <Separator className="my-4" />
+                <Separator className="my-2" />
 
-                <div className="p-2 space-y-6 max-h-[70vh] overflow-y-auto">
+                <div className="p-2 space-y-6 max-h-[70vh] overflow-y-auto tabs-scroll">
                     {showSuccess ? (
                         <div className="bg-green-50 p-4 rounded-lg border border-green-200 flex items-center gap-3">
                             <div className="bg-green-100 p-2 rounded-full">
@@ -116,7 +107,7 @@ const ApplyJob = ({ job }) => {
                                         >
                                             <div className="flex items-center space-x-3">
                                                 <RadioGroupItem value="profile" id="profile" />
-                                                <Label htmlFor="profile" className="cursor-pointer">
+                                                <Label htmlFor="profile" className="cursor-pointer flex flex-col items-start">
                                                     <div className="font-medium">Use resume from profile</div>
                                                     <p className="text-sm text-gray-500">Use your existing uploaded resume</p>
                                                 </Label>
@@ -124,7 +115,7 @@ const ApplyJob = ({ job }) => {
 
                                             <div className="flex items-center space-x-3">
                                                 <RadioGroupItem value="upload" id="upload" />
-                                                <Label htmlFor="upload" className="cursor-pointer">
+                                                <Label htmlFor="upload" className="cursor-pointer  flex flex-col items-start">
                                                     <div className="font-medium">Upload new resume</div>
                                                     <p className="text-sm text-gray-500">Upload a different resume for this position</p>
                                                 </Label>
@@ -243,7 +234,7 @@ const ApplyJob = ({ job }) => {
                     <Button
                         onClick={submitApplication}
                         disabled={loading || showSuccess}
-                        className={`w-full py-6 font-semibold text-lg ${
+                        className={`w-full py-3 font-semibold text-md ${
                             showSuccess ? "bg-green-500 hover:bg-green-600" : "bg-blue-600 hover:bg-blue-700"
                         } text-white`}
                     >

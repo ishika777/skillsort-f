@@ -1,4 +1,3 @@
-import ThemeButton from '@/components/shared/ThemeButton'
 import { Link } from 'react-router-dom'
 
 const SignupNav = () => {
@@ -17,24 +16,6 @@ const SignupNav = () => {
             <span className="dark:text-white">Sort</span>
           </span>
         </Link>
-        
-        {/* Right side actions */}
-        <div className="flex items-center gap-3">
-          <Link 
-            to="/login" 
-            className="text-sm md:text-base font-medium text-gray-600 hover:text-red-500 dark:text-gray-300 dark:hover:text-red-400 hidden sm:block"
-          >
-            Log in
-          </Link>
-          <div className="h-5 w-px bg-gray-300 dark:bg-gray-700 hidden sm:block"></div>
-          <Link 
-            to="/contact" 
-            className="text-sm md:text-base font-medium text-gray-600 hover:text-red-500 dark:text-gray-300 dark:hover:text-red-400 hidden sm:block"
-          >
-            Help
-          </Link>
-          <ThemeButton />
-        </div>
       </div>
     </div>
   )

@@ -85,7 +85,7 @@ const ExperienceDetails = () => {
                     </DrawerDescription>
                 </DrawerHeader>
 
-                <div className="py-6 space-y-6 max-h-[70vh] overflow-y-auto">
+                <div className="py-6 space-y-6 max-h-[70vh] tabs-scroll overflow-y-auto">
                     {input.length === 0 ? (
                         <div className="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
                             <PlusCircle className="mx-auto text-gray-400 mb-2" size={30} />

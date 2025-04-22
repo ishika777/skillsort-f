@@ -9,7 +9,6 @@ import VerifyEmail from "./pages/auth/advance auth/VerifyEmail"
 import { useDispatch, useSelector } from "react-redux"
 import AdminHome from "./pages/AdminHome"
 import { checkAuthentication } from "./actions/user-actions"
-import { initializeTheme } from "./store/themeSlice"
 import Loading from "./components/shared/Loading"
 import { useEffect } from "react"
 import SignupTabs from "./pages/auth/SignupTabs"
@@ -104,7 +103,6 @@ function App() {
 
     useEffect(() => {
         checkAuthentication(dispatch);
-        initializeTheme();
     }, [dispatch]);
 
     useEffect(() => {
@@ -120,13 +118,18 @@ function App() {
             ////////////////////////////////////////////////////////////////////////////////
             /////////////////////////////////////////////
             // 
+            //   cv make optional or compulsory
             // 
-            // 
-            // 
+            //  for recruiter, current company, also experience
+            //  verify email me user ke acc navigate krna
+            //  routes protect krne h
             //  job deatils me posted by aur hr ki profile bnani h, also vo public private kr skta h
-            // 
+            //   enter button event handler
             // company name in appliactions and jobs
-            //
+            // hr controller me role chk krna h
+            //   update detail only if changes made
+            // experience edit krne me date fill nhi ho rhi backend se shi format me
+            // personal details update me image ka preview
             // //////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////
             ///////////////////////////////////////////////////////////////////////////////

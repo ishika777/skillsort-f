@@ -49,7 +49,7 @@ const Layout = () => {
     };
 
     return (
-        <div className="h-full w-full bg-gray-50 dark:bg-gray-900">
+        <div className="h-full w-full bg-gray-50 ">
             <Tabs value={tabValue} onValueChange={setTabValue} className="flex flex-row bg-gray-900 gap-0 h-full w-full">
             <div className="flex h-full">
                 <TabsList className="flex flex-col p-2 justify-start items-start min-w-[200px] w-fit h-fit bg-transparent">

@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     loading: false,
-    appliedJobs: null
+    appliedJobs: null,
+    allApplications: null,
+
 };
 
 export const applicationSlice = createSlice({
@@ -15,9 +17,12 @@ export const applicationSlice = createSlice({
         setAppliedJobs(state, action) { 
             state.appliedJobs = action.payload;
         },
+        setAllApplications(state, action) { 
+            state.allApplications = action.payload;
+        },
     },
 });
 
-export const { setLoading, setAppliedJobs } = applicationSlice.actions;
+export const { setLoading, setAppliedJobs, setAllApplications } = applicationSlice.actions;
 
 export default applicationSlice.reducer;

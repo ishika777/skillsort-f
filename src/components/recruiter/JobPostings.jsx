@@ -35,13 +35,12 @@ const JobPostings = () => {
     const getStatusBadge = (deadline) => {
         const isOpen = deadline.split("T")[0] > today;
         return isOpen ? 
-            <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Active</Badge> : 
+            <Badge className="bg-green-100 text-green-800 text-md hover:bg-green-200">Active</Badge> : 
             <Badge className="bg-red-100 text-red-800 hover:bg-red-200">Closed</Badge>;
     };
 
     return (
         <div className="tabs-scroll w-full p-6 overflow-y-auto h-full pt-4">
-
                 <div className="flex items-center justify-between space-x-2 mb-6 mt-3">
                     <div className="flex items-center gap-3">
                         <Button 
@@ -71,13 +70,13 @@ const JobPostings = () => {
 
                 </div>
 
-                <Card>
+                <Card className="">
                     <CardHeader className="bg-white border-b">
                         <CardTitle>Job Listings ({filteredJobs?.length || 0})</CardTitle>
                     </CardHeader>
-                    <CardContent className="p-0">
+                    <CardContent>
                         <div className="overflow-x-auto">
-                            <Table>
+                            <Table className="h-full">
                                 <TableHeader>
                                     <TableRow className="bg-gray-50">
                                         <TableCell className="font-medium">Job Title</TableCell>
@@ -110,15 +109,15 @@ const JobPostings = () => {
                                             </TableRow>
                                         ) : (
                                             filteredJobs?.map((job) => (
-                                                <TableRow key={job._id} className="hover:bg-gray-50">
-                                                    <TableCell className="font-medium">{job.title}</TableCell>
+                                                <TableRow key={job._id} className="hover:bg-gray-50 ">
+                                                    <TableCell className="font-semibold text-md">{job.title}</TableCell>
                                                     <TableCell>
-                                                        <Badge variant="outline" className="font-normal">
+                                                        <Badge variant="outline" className="text-sm">
                                                             {job.jobType}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <span className="font-medium">{job.applicants}</span>
+                                                        <span className="font-medium text-md">{job.applicants || 0}</span>
                                                         {job.applicants > 0 && 
                                                             <span className="text-xs text-gray-500 ml-1">candidates</span>
                                                         }
@@ -129,32 +128,14 @@ const JobPostings = () => {
                                                             <Button 
                                                                 size="sm" 
                                                                 variant="outline"
-                                                                className="flex items-center gap-1" 
+                                                                className="flex flex-1 items-center gap-1" 
                                                                 onClick={() => handleViewApplicants(job)}
                                                             >
                                                                 <Eye size={14} />
                                                                 <span className="hidden sm:inline">View</span>
                                                             </Button>
-                                                            <EditJob job={job}>
-                                                                <Button 
-                                                                    size="sm" 
-                                                                    variant="outline"
-                                                                    className="flex items-center gap-1"
-                                                                >
-                                                                    <Pen size={14} />
-                                                                    <span className="hidden sm:inline">Edit</span>
-                                                                </Button>
-                                                            </EditJob>
-                                                            <DeleteJob job={job}>
-                                                                <Button 
-                                                                    size="sm" 
-                                                                    variant="outline"
-                                                                    className="text-red-500 hover:text-red-600 flex items-center gap-1"
-                                                                >
-                                                                    <Trash2 size={14} />
-                                                                    <span className="hidden sm:inline">Delete</span>
-                                                                </Button>
-                                                            </DeleteJob>
+                                                            <EditJob job={job} />
+                                                            <DeleteJob job={job} />
                                                         </div>
                                                     </TableCell>
                                                 </TableRow>

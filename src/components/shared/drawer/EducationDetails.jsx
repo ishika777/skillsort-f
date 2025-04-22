@@ -31,6 +31,10 @@ const EducationDetails = () => {
     };
 
     const submitHandler = async() => {
+        if(input.length === 0){
+            toast.error("Education can't be empty");
+            return;
+        }
         const hasEmptyField = input.some((edu) => {
             return (!edu.degree || !edu.institution || !edu.startYear || !edu.endYear);
         });
@@ -88,7 +92,7 @@ const EducationDetails = () => {
                     </DrawerDescription>
                 </DrawerHeader>
 
-                <div className="py-6 space-y-6 max-h-[70vh] overflow-y-auto">
+                <div className="py-6 space-y-6 max-h-[70vh] tabs-scroll overflow-y-auto">
                     {input.length === 0 ? (
                         <div className="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
                             <GraduationCap className="mx-auto text-gray-400 mb-2" size={30} />
@@ -105,14 +109,19 @@ const EducationDetails = () => {
                         input.map((edu, index) => (
                             <div key={index} className="flex flex-col gap-4 p-6 rounded-lg border border-gray-200 bg-gray-50 relative shadow-sm hover:shadow-md transition-shadow">
                                 <div className="absolute top-4 right-4 flex gap-2">
-                                    <button
-                                        type="button"
-                                        onClick={() => removeEducation(index)}
-                                        className="text-gray-500 hover:text-red-500 transition-colors bg-white p-1.5 rounded-full border border-gray-200"
-                                        aria-label="Remove education"
-                                    >
-                                        <Trash2 size={16} />
-                                    </button>
+                                    {
+                                        index > 0 && (
+                                            <button
+                                            type="button"
+                                            onClick={() => removeEducation(index)}
+                                            className="text-gray-500 hover:text-red-500 transition-colors bg-white p-1.5 rounded-full border border-gray-200"
+                                            aria-label="Remove education"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                        )
+                                    }
+                                   
                                 </div>
                                 
                                 <h3 className="font-medium text-gray-700 mb-2">Education #{index + 1}</h3>

@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom'
 import { toast } from "sonner"
 import { useState } from 'react'
 import { forgotPassword } from '@/actions/user-actions'
-import ThemeButton from "@/components/shared/ThemeButton"
 import { useDispatch, useSelector } from 'react-redux'
 
 const ForgotPassword = () => {
@@ -37,23 +36,13 @@ const ForgotPassword = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center h-full p-4 bg-gray-50 dark:bg-gray-900">
-            <div className="absolute top-4 right-4">
-                <ThemeButton />
-            </div>
-            
-            <div className="w-full max-w-md">
-                <Link to="/login" className="inline-flex items-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 mb-6 group transition-colors">
-                    <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-                    Back to Login
-                </Link>
-                
-                <Card className="border-gray-200 dark:border-gray-800 shadow-lg dark:shadow-gray-800/20 overflow-hidden">
+        <div className="flex flex-col items-center justify-center h-screen w-screen bg-gray-50 dark:bg-gray-900">
+                <Card className="border-gray-200  w-[450px] dark:border-gray-800 shadow-lg dark:shadow-gray-800/20 overflow-hidden">
                     {!emailSent ? (
                         <>
-                            <CardHeader className="space-y-1 border-b pb-6">
-                                <div className="mx-auto bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full w-fit mb-2">
-                                    <ShieldAlert className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                            <CardHeader className="space-y-1">
+                                <div className="mx-auto bg-red-100 dark:bg-red-900/30 p-3 rounded-full w-fit mb-2">
+                                    <ShieldAlert className="h-6 w-6 text-red-600 dark:text-red-400" />
                                 </div>
                                 <CardTitle className="text-2xl font-bold text-center text-gray-900 dark:text-gray-100">
                                     Forgot Password?
@@ -63,9 +52,9 @@ const ForgotPassword = () => {
                                 </CardDescription>
                             </CardHeader>
                             
-                            <CardContent className="pt-6">
+                            <CardContent className="pt-3">
                                 <form onSubmit={submitHandler} className="space-y-4">
-                                    <div className="space-y-2">
+                                    <div className="space-y-3">
                                         <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">Email Address</Label>
                                         <div className="relative">
                                             <Input 
@@ -76,7 +65,7 @@ const ForgotPassword = () => {
                                                 name="email"
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 placeholder="email@example.com"
-                                                className="pl-10 border-gray-300 dark:border-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                                                className="pl-10 border-gray-300 dark:border-gray-700 focus:ring-red-500 focus:border-red-500"
                                             />
                                             <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500" />
                                         </div>
@@ -85,7 +74,7 @@ const ForgotPassword = () => {
                                     <Button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-medium py-2"
+                                        className="w-full mt-2 bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white font-medium py-2"
                                     >
                                         {loading ? (
                                             <>
@@ -101,7 +90,7 @@ const ForgotPassword = () => {
                                 <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
                                     <div className="text-center text-sm text-gray-600 dark:text-gray-400">
                                         Remember your password?{" "}
-                                        <Link to="/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors">
+                                        <Link to="/login" className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium transition-colors">
                                             Sign In
                                         </Link>
                                     </div>
@@ -141,22 +130,15 @@ const ForgotPassword = () => {
                                         Try a different email
                                     </Button>
                                     
-                                    <Link to="/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">
+                                    <Link to="/login" className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm font-medium">
                                         Back to login
                                     </Link>
                                 </div>
                             </CardContent>
                         </>
                     )}
-                    
-                    <CardFooter className="flex justify-center py-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-800">
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            Need help? <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">Contact Support</a>
-                        </p>
-                    </CardFooter>
                 </Card>
             </div>
-        </div>
     )
 }
 

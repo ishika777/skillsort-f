@@ -54,7 +54,7 @@ const Settings = () => {
                             <div className="relative mb-2">
                                 <Avatar className="h-24 w-24">
                                     <AvatarImage src={user?.profilePicture} />
-                                    <AvatarFallback className="text-lg bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-200">
+                                    <AvatarFallback className="text-lg bg-red-100 text-red-600">
                                         {inittials}
                                     </AvatarFallback>
                                 </Avatar>

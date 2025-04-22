@@ -76,7 +76,7 @@ const EmployeeLayout = () => {
     ];
 
     return (
-        <div className="h-full w-full bg-gray-50 dark:bg-gray-900">
+        <div className="h-full w-full bg-gray-50">
             <Tabs value={tabValue} onValueChange={(value) => { setTabValue(value) }} className="flex flex-row bg-gray-900 gap-0 h-full w-full">
                 <div className="flex h-full">
                     <TabsList className="flex flex-col p-2 justify-start items-start min-w-[200px] w-fit h-fit bg-transparent">
@@ -148,12 +148,12 @@ const EmployeeLayout = () => {
 
 
 
-            {/* <main className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-900">
+            {/* <main className="flex-1 overflow-auto bg-gray-50 ">
                     {tabValue === "jobdetails" && (
-                        <div className="p-4 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+                        <div className="p-4 bg-white border-b ">
                             <Button
                                 variant="ghost"
-                                className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400"
+                                className="flex items-center gap-2 text-gray-600 hover:text-red-500"
                                 onClick={() => setTabValue(previousTab)}
                             >
                                 <ChevronLeft size={16} />

@@ -116,7 +116,7 @@ const PersonalDetails = () => {
     }
 
     return (
-        <Drawer direction="right" className="overflow-auto">
+        <Drawer direction="right">
             <DrawerTrigger asChild>
                 <Button 
                     className="bg-red-50 hover:bg-red-100 transition-colors duration-200" 
@@ -129,9 +129,9 @@ const PersonalDetails = () => {
                 </Button>
             </DrawerTrigger>
 
-            <DrawerContent className="p-6 max-w-md mx-auto">
-                <DrawerHeader className="px-0">
-                    <DrawerTitle className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <DrawerContent className="p-4 bg-white">
+                <DrawerHeader>
+                    <DrawerTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
                         <User className="text-red-500" size={18} />
                         Update Personal Details
                     </DrawerTitle>
@@ -140,9 +140,9 @@ const PersonalDetails = () => {
                     </DrawerDescription>
                 </DrawerHeader>
 
-                <Separator className="my-4" />
+                <Separator className="my-2" />
 
-                <div className="space-y-6">
+                <div className="space-y-6  max-h-[70vh] tabs-scroll overflow-y-auto">
                     {/* Profile Image Section */}
                     <div className="flex flex-col items-center justify-center mb-6">
                         <Label htmlFor="image" className="relative cursor-pointer group">

@@ -84,35 +84,26 @@ const ProfessionalSignup = ({ input, setInput }) => {
     };
 
     return (
-        <div className="flex flex-col w-full items-center h-full bg-gray-50 dark:bg-gray-900">
-            <div className="w-full max-w-7xl px-4 py-6">
-                <div className="flex items-center justify-center mb-6">
-                    <SignupNav />
-                </div>
-                
-                <div className="mb-6">
+        <div className="tabs-scroll w-full overflow-y-auto h-full pt-4">
+            <div className="w-full max-w-7xl px-4 py-3">
+                <div className="mb-4">
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center">Complete Your Professional Profile</h1>
                     <p className="text-gray-600 dark:text-gray-400 text-center mt-2">Share your experience and professional links to make your profile stand out</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="w-full">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        {/* Left Column - Experience Form */}
-                        <Card className="shadow-md border-0 dark:bg-gray-800">
-                            <CardContent className="p-6">
-                                <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Experience & Education</h2>
-                                <div className="h-[550px] overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <Card className="shadow-md border-0">
+                            <CardContent className="px-5">
+                                <h2 className="text-lg font-semibold ml-2 text-gray-800">Experience</h2>
+                                <div className="h-fit tabs-scroll overflow-y-auto pr-2 custom-scrollbar">
                                     <ExperienceForm input={input} setInput={setInput} />
                                 </div>
                             </CardContent>
                         </Card>
 
-                        {/* Right Column - Professional Info */}
-                        <Card className="shadow-md border-0 dark:bg-gray-800">
-                            <CardContent className="p-6">
-                                <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Professional Details</h2>
-                                
-                                {/* Role Selection */}
+                        <Card className="shadow-md border-0">
+                            <CardContent className="px-5">
                                 <div className="mb-6">
                                     <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
                                         I am looking to
@@ -124,8 +115,8 @@ const ProfessionalSignup = ({ input, setInput }) => {
                                     >
                                         <div className={`flex items-center border rounded-lg p-4 cursor-pointer transition-all ${
                                             input.role === "Employee" 
-                                                ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20" 
-                                                : "border-gray-200 hover:border-gray-300 dark:border-gray-700"
+                                                ? "border-blue-500 bg-blue-50" 
+                                                : "border-gray-200 hover:border-gray-300"
                                         }`}>
                                             <RadioGroupItem value="Employee" id="Employee" className="sr-only" />
                                             <Label htmlFor="Employee" className="flex items-center cursor-pointer w-full">
@@ -136,7 +127,7 @@ const ProfessionalSignup = ({ input, setInput }) => {
                                                     <span className={`block ${input.role === "Employee" ? "font-medium" : ""}`}>
                                                         Find Jobs
                                                     </span>
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                                                    <span className="text-xs text-gray-500">
                                                         I want to apply for positions
                                                     </span>
                                                 </div>
@@ -145,8 +136,8 @@ const ProfessionalSignup = ({ input, setInput }) => {
                                         
                                         <div className={`flex items-center border rounded-lg p-4 cursor-pointer transition-all ${
                                             input.role === "Recruiter" 
-                                                ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20" 
-                                                : "border-gray-200 hover:border-gray-300 dark:border-gray-700"
+                                                ? "border-blue-500 bg-blue-50 " 
+                                                : "border-gray-200 hover:border-gray-300"
                                         }`}>
                                             <RadioGroupItem value="Recruiter" id="Recruiter" className="sr-only" />
                                             <Label htmlFor="Recruiter" className="flex items-center cursor-pointer w-full">
@@ -157,7 +148,7 @@ const ProfessionalSignup = ({ input, setInput }) => {
                                                     <span className={`block ${input.role === "Recruiter" ? "font-medium" : ""}`}>
                                                         Hire Talent
                                                     </span>
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                                                    <span className="text-xs text-gray-500">
                                                         I want to post jobs
                                                     </span>
                                                 </div>
@@ -168,13 +159,13 @@ const ProfessionalSignup = ({ input, setInput }) => {
 
                                 {/* Resume Upload */}
                                 <div className="mb-6">
-                                    <Label htmlFor="resume" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
+                                    <Label htmlFor="resume" className="text-sm font-medium text-gray-700 mb-2 block">
                                         Resume / CV
                                     </Label>
-                                    <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-4 hover:border-blue-400 dark:hover:border-blue-600 transition-colors">
+                                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 dark:hover:border-blue-600 transition-colors">
                                         <div className="flex flex-col items-center justify-center">
                                             <Upload className="h-8 w-8 text-gray-400 mb-2" />
-                                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                            <p className="text-sm text-gray-600 mb-2">
                                                 {input.resume ? input.resume.name : "Upload your resume (PDF only)"}
                                             </p>
                                             <div className="text-xs flex items-center text-gray-500">
@@ -205,7 +196,7 @@ const ProfessionalSignup = ({ input, setInput }) => {
 
                                 {/* Professional Links */}
                                 <div>
-                                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
+                                    <Label className="text-sm font-medium text-gray-700 mb-2 block">
                                         Professional Links
                                         <span className="text-red-500 font-normal text-xs ml-1">(LinkedIn, GitHub - required)</span>
                                     </Label>
@@ -219,7 +210,7 @@ const ProfessionalSignup = ({ input, setInput }) => {
                                                 value={input.url.linkedIn}
                                                 onChange={changeUrlHandler}
                                                 required
-                                                className="pl-10 h-11 border-gray-200 dark:border-gray-700 rounded-lg"
+                                                className="pl-10 h-11 border-gray-200  rounded-lg"
                                             />
                                             <div className="absolute left-3 top-3">
                                                 <Linkedin className="h-5 w-5 text-blue-600" />
@@ -234,10 +225,10 @@ const ProfessionalSignup = ({ input, setInput }) => {
                                                 value={input.url.gitHub}
                                                 onChange={changeUrlHandler}
                                                 required
-                                                className="pl-10 h-11 border-gray-200 dark:border-gray-700 rounded-lg"
+                                                className="pl-10 h-11 border-gray-200  rounded-lg"
                                             />
                                             <div className="absolute left-3 top-3">
-                                                <Github className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                                                <Github className="h-5 w-5 text-gray-700" />
                                             </div>
                                         </div>
                                         
@@ -248,7 +239,7 @@ const ProfessionalSignup = ({ input, setInput }) => {
                                                 name="twitter"
                                                 value={input.url.twitter}
                                                 onChange={changeUrlHandler}
-                                                className="pl-10 h-11 border-gray-200 dark:border-gray-700 rounded-lg"
+                                                className="pl-10 h-11 border-gray-200 rounded-lg"
                                             />
                                             <div className="absolute left-3 top-3">
                                                 <Twitter className="h-5 w-5 text-blue-400" />
@@ -262,7 +253,7 @@ const ProfessionalSignup = ({ input, setInput }) => {
                                                 name="portfolio"
                                                 value={input.url.portfolio}
                                                 onChange={changeUrlHandler}
-                                                className="pl-10 h-11 border-gray-200 dark:border-gray-700 rounded-lg"
+                                                className="pl-10 h-11 border-gray-200 rounded-lg"
                                             />
                                             <div className="absolute left-3 top-3">
                                                 <LinkIcon className="h-5 w-5 text-gray-500" />
@@ -279,7 +270,7 @@ const ProfessionalSignup = ({ input, setInput }) => {
                         <Button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium h-12 rounded-lg shadow-sm"
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium h-10 rounded-lg shadow-sm"
                         >
                             {loading ? (
                                 <>
@@ -290,7 +281,7 @@ const ProfessionalSignup = ({ input, setInput }) => {
                                 "Complete Registration"
                             )}
                         </Button>
-                        <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
+                        <p className="text-center text-sm text-gray-500 mt-4">
                             By completing registration, you agree to our Terms of Service and Privacy Policy
                         </p>
                     </div>

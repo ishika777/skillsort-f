@@ -43,8 +43,8 @@ const JobListings = ({ setSelectedJob, setTabValue, setPreviousTab }) => {
 
     return (
         <div className="tabs-scroll w-full p-6 overflow-y-auto h-full pt-4">
-            {allJobs === null ? (
-                <div className="flex flex-col items-center justify-center p-8 bg-white rounded-xl shadow">
+            {allJobs.length === 0 || allJobs === null ? (
+                <div className="flex flex-col items-center justify-center h-full p-4 bg-white rounded-xl shadow">
                     <Briefcase size={48} className="text-gray-300 mb-4" />
                     <p className="text-gray-600 text-lg">No jobs found</p>
                     <p className="text-gray-400 mt-2">Try adjusting your filters or check back later</p>
@@ -154,7 +154,7 @@ const JobListings = ({ setSelectedJob, setTabValue, setPreviousTab }) => {
                                             <div>
                                                 {daysRemaining !== null && (
                                                     <span className={`text-sm font-medium ${
-                                                        daysRemaining <= NULL ? "text-red-600" : 
+                                                        daysRemaining <= null ? "text-red-600" : 
                                                         daysRemaining <= 7 ? "text-orange-600" : 
                                                         "text-green-600"
                                                     }`}>
